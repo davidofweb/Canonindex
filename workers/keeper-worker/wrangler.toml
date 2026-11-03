@@ -1,0 +1,30 @@
+name = "canon-keeper-worker"
+main = "src/index.ts"
+compatibility_date = "2025-03-01"
+
+# Free 5-minute Cron Trigger — runs automatically with zero VPS:
+[triggers]
+crons = ["*/5 * * * *"]
+
+[vars]
+CHAIN_ID = "99801"
+ELYSIUM_RPC = "https://testnet-rpc.elysium.kinetiq.xyz"
+# Optional: URL of your canon-passport-worker so boost changes get picked up right away:
+PASSPORT_WORKER_URL = ""
+# Paste the deployment JSON exported from Testnet Studio (pnthRouter, indexVault, staking, deployedBlock):
+CANON_DEPLOYMENT_JSON = "{}"
+BASKET_K = "5"
+POKE_BATCH = "10"
+POKE_RISE_BPS = "100"
+
+# Create a free KV namespace once via:
+#   npx wrangler kv namespace create KEEPER_KV
+# Then paste the returned id below:
+[[kv_namespaces]]
+binding = "KEEPER_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# Store your keeper private key (funded with ~0.05 Test HYPE) via:
+#   npx wrangler secret put KEEPER_KEY
+# Optional token if you also want to trigger POST /run manually over HTTP:
+#   npx wrangler secret put TRIGGER_TOKEN

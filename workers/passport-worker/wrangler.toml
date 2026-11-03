@@ -1,0 +1,25 @@
+name = "canon-passport-worker"
+main = "src/index.ts"
+compatibility_date = "2025-03-01"
+
+[vars]
+CHAIN_ID = "99801"
+ELYSIUM_RPC = "https://testnet-rpc.elysium.kinetiq.xyz"
+HYPEREVM_RPC = "https://rpc.hyperliquid.xyz/evm"
+HL_INFO_URL = "https://api.hyperliquid.xyz/info"
+# Paste your deployed HypePassportRegistry address from Testnet Studio:
+REGISTRY_ADDRESS = "0x0000000000000000000000000000000000000000"
+# Keep "0" to enforce real Hyperliquid mainnet balances, or set "1" on testnet if you want empty test wallets to mint Tier 1:
+TESTNET_MIN_TIER = "0"
+
+# Create a free KV namespace once via:
+#   npx wrangler kv namespace create PASSPORT_KV
+# Then paste the returned id below:
+[[kv_namespaces]]
+binding = "PASSPORT_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# Store private keys with wrangler (never paste them in this file):
+#   npx wrangler secret put ATTESTOR_KEY
+#   npx wrangler secret put RELAYER_KEY
+#   npx wrangler secret put PEPPER_SALT

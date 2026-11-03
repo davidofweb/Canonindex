@@ -1,0 +1,214 @@
+import type { ReactNode } from "react";
+import { useConnection } from "wagmi";
+import {
+  ArrowLeftRight,
+  CheckSquare,
+  Compass,
+  Layers,
+  ScanSearch,
+} from "lucide-react";
+import {
+  deployment,
+  elysium,
+  explorer,
+  isCustomCanonActive,
+  useDeploymentVersion,
+} from "@/lib/chain/config";
+import { CanonWordmark } from "./code-art";
+import { short, ThemeSwitcher, type TabKey } from "./shared";
+
+const NAV_ITEMS: ReadonlyArray<{
+  id: TabKey;
+  label: string;
+  icon: typeof Compass;
+}> = [
+  { id: "home", label: "Home", icon: Compass },
+  { id: "trade", label: "Trade", icon: ArrowLeftRight },
+  { id: "earn", label: "Earn", icon: Layers },
+  { id: "vote", label: "Vote", icon: CheckSquare },
+  { id: "lens", label: "Lens", icon: ScanSearch },
+];
+
+export function CanonShell({
+  activeTab,
+  onSelectTab,
+  onOpenWallet,
+  onOpenTerms,
+  onOpenStudio,
+  children,
+}: {
+  activeTab: TabKey;
+  onSelectTab: (tab: TabKey) => void;
+  onOpenWallet: () => void;
+  onOpenTerms: () => void;
+  onOpenStudio: () => void;
+  children: ReactNode;
+}) {
+  useDeploymentVersion();
+  const { address, isConnected, chainId } = useConnection();
+  const wrongChain = isConnected && chainId !== elysium.id;
+  const customActive = isCustomCanonActive();
+
+  const walletButtonLabel = !isConnected
+    ? "Connect"
+    : wrongChain
+      ? "Switch Network"
+      : short(address ?? "");
+
+  return (
+    <div className="flex min-h-dvh flex-col bg-canvas text-ink">
+      {/* Top Bar:
+          - Mobile (<1024px): Scrolls naturally with page (zero sticky top clutter)
+          - Desktop (>=1024px): Strict 3-Zone Sticky Top Bar (CanonWordmark · 5 Links · 1 Wallet Button) */}
+      <header className="border-b border-line bg-canvas/92 lg:sticky lg:top-0 lg:z-30 lg:backdrop-blur-md">
+        <div className="mx-auto flex h-15 max-w-6xl items-center justify-between gap-8 px-4 sm:px-6">
+          {/* Zone 1: Geometric Vault Wordmark */}
+          <button
+            type="button"
+            onClick={() => onSelectTab("home")}
+            className="code-glitch inline-flex min-h-[44px] shrink-0 cursor-pointer items-center whitespace-nowrap text-ink"
+            aria-label="CANON Home"
+          >
+            <CanonWordmark />
+          </button>
+
+          {/* Zone 2: 5 Clean Single-Line Navigation Links */}
+          <nav aria-label="Main navigation" className="hidden items-center gap-8 lg:flex">
+            {NAV_ITEMS.map((item) => {
+              const active = item.id === activeTab;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onSelectTab(item.id)}
+                  className={`relative min-h-[44px] cursor-pointer whitespace-nowrap text-[14.5px] font-bold tracking-[-0.015em] transition-colors ${
+                    active ? "text-ink" : "text-stone hover:text-ink"
+                  }`}
+                >
+                  {item.label}
+                  {active && (
+                    <span className="absolute inset-x-0 bottom-0 h-[2px] bg-signal" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Zone 3: Single Minimalist Wallet Action */}
+          <button
+            type="button"
+            onClick={onOpenWallet}
+            className={`code-glitch inline-flex min-h-[40px] shrink-0 cursor-pointer items-center whitespace-nowrap rounded-[12px] px-4 text-[13.5px] font-bold tracking-[-0.015em] transition-colors ${
+              wrongChain
+                ? "bg-signal text-signal-ink"
+                : isConnected
+                  ? "border border-line-strong bg-surface text-ink hover:bg-well"
+                  : "bg-primary-bg text-primary-fg hover:opacity-90"
+            }`}
+          >
+            <span className={isConnected && !wrongChain ? "num" : ""}>{walletButtonLabel}</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content Container */}
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-safe-nav sm:px-6 lg:py-10">
+        {children}
+      </main>
+
+      {/* Minimalist Architectural Footer + 4-Skin Theme Switcher */}
+      <footer className="border-t border-line pb-safe-nav lg:pb-0">
+        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-7 text-[12.5px] text-stone sm:px-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <CanonWordmark compact />
+              <span aria-hidden="true">·</span>
+              <span>
+                {customActive && deployment
+                  ? `Live $${deployment.tokenSymbol ?? "CANON"} (${short(deployment.pnth)})`
+                  : "Elysium Testnet"}
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>Test coins carry no monetary value</span>
+            </div>
+
+            <ThemeSwitcher />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-line pt-4 font-semibold">
+            <button
+              type="button"
+              onClick={onOpenStudio}
+              className="cursor-pointer font-bold text-signal hover:underline"
+            >
+              Launch $CANON
+            </button>
+            {deployment && (
+              <>
+                <a
+                  href={explorer("token", deployment.pnth)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-ink"
+                >
+                  Token ↗
+                </a>
+                <a
+                  href={explorer("address", deployment.indexVault)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-ink"
+                >
+                  Vault ↗
+                </a>
+                <a
+                  href={explorer("address", deployment.staking)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-ink"
+                >
+                  Staking ↗
+                </a>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={onOpenTerms}
+              className="cursor-pointer font-semibold hover:text-ink"
+            >
+              Terms
+            </button>
+          </div>
+        </div>
+      </footer>
+
+      {/* Mobile Native iPhone Bottom Tab Bar (Pinned <9% viewport height; hidden on lg: desktop) */}
+      <nav
+        aria-label="Mobile bottom navigation"
+        className="bottom-bar-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas/94 backdrop-blur-lg lg:hidden"
+      >
+        <div className="mx-auto grid h-[60px] max-w-md grid-cols-5 px-1">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const active = item.id === activeTab;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onSelectTab(item.id)}
+                className={`flex min-h-[48px] cursor-pointer flex-col items-center justify-center gap-0.5 transition-colors ${
+                  active ? "text-signal" : "text-stone"
+                }`}
+              >
+                <Icon className={`h-[20px] w-[20px] ${active ? "stroke-[2.5]" : "stroke-[1.9]"}`} />
+                <span className={`text-[10.5px] tracking-[-0.01em] ${active ? "font-extrabold text-ink" : "font-bold"}`}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+    </div>
+  );
+}

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="obsidian">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>CANON · Ten clean coins. One liquid index.</title>
+    <meta
+      name="description"
+      content="Ten clean coins in one liquid index on Elysium. Buys fill The Vault for stakers; sells burn supply."
+    />
+    <meta name="theme-color" content="#090B0E" />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:site_name" content="CANON" />
+    <meta property="og:title" content="CANON · Ten clean coins. One liquid index." />
+    <meta
+      property="og:description"
+      content="Ten clean coins in one liquid index on Elysium. Buys fill The Vault for stakers; sells burn supply."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/canon-og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:image:alt" content="CANON concentric vault index mark on dark obsidian" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CANON · Ten clean coins. One liquid index." />
+    <meta
+      name="twitter:description"
+      content="Ten clean coins in one liquid index on Elysium. Buys fill The Vault for stakers; sells burn supply."
+    />
+    <meta name="twitter:image" content="/canon-og.jpg" />
+    <meta name="twitter:image:alt" content="CANON concentric vault index mark on dark obsidian" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/Geist.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeistMono.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("canon.theme.v1");
+          var bgMap = {
+            obsidian: ["#090B0E", "dark"],
+            cobalt: ["#F4F6FA", "light"],
+            alabaster: ["#F6F5F0", "light"],
+            titanium: ["#111214", "dark"]
+          };
+          var t = saved && bgMap[saved] ? saved : "obsidian";
+          document.documentElement.dataset.theme = t;
+          document.documentElement.style.colorScheme = bgMap[t][1];
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute("content", bgMap[t][0]);
+
+          var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          var eff = conn && conn.effectiveType ? String(conn.effectiveType).toLowerCase() : "";
+          var netType = conn && conn.type ? String(conn.type).toLowerCase() : "";
+          var dl = conn && typeof conn.downlink === "number" ? conn.downlink : 10;
+          var saver = Boolean(
+            conn &&
+              (conn.saveData === true ||
+                eff === "slow-2g" ||
+                eff === "2g" ||
+                eff === "3g" ||
+                (netType === "cellular" && dl > 0 && dl < 2.8) ||
+                (dl > 0 && dl < 1.4))
+          );
+          document.documentElement.dataset.netTier = saver ? "saver" : "full";
+
+          var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          var hasBlur =
+            !window.CSS ||
+            !window.CSS.supports ||
+            window.CSS.supports("backdrop-filter", "blur(2px)") ||
+            window.CSS.supports("-webkit-backdrop-filter", "blur(2px)");
+          var cores = typeof navigator.hardwareConcurrency === "number" ? navigator.hardwareConcurrency : 8;
+          var mem = typeof navigator.deviceMemory === "number" ? navigator.deviceMemory : 8;
+          var gfxTier = "full";
+          if (reduced || !hasBlur) {
+            gfxTier = "lite";
+          } else if (saver || (cores > 0 && cores <= 2) || (mem > 0 && mem <= 1)) {
+            gfxTier = "balanced";
+          }
+          document.documentElement.dataset.gfxTier = gfxTier;
+
+          if (!reduced && hasBlur) {
+            var isMobile = window.matchMedia("(max-width: 767px)").matches;
+            var preload = document.createElement("link");
+            preload.rel = "preload";
+            preload.as = "image";
+            preload.type = "image/avif";
+            preload.setAttribute("fetchpriority", "high");
+            var srcsetVal = "";
+            var sizesVal = "100vw";
+            if (saver) {
+              srcsetVal = isMobile ? "/yoyo/mobile-360w.avif 360w" : "/yoyo/desktop-640w.avif 640w";
+              sizesVal = isMobile ? "360px" : "640px";
+            } else if (isMobile) {
+              srcsetVal =
+                "/yoyo/mobile-360w.avif 360w, /yoyo/mobile-540w.avif 540w, /yoyo/mobile-768w.avif 768w, /yoyo/mobile-1152w.avif 1152w";
+            } else {
+              srcsetVal =
+                "/yoyo/desktop-640w.avif 640w, /yoyo/desktop-1024w.avif 1024w, /yoyo/desktop-1376w.avif 1376w, /yoyo/desktop-2064w.avif 2064w";
+            }
+            preload.setAttribute("imagesrcset", srcsetVal);
+            preload.setAttribute("imagesizes", sizesVal);
+            document.head.appendChild(preload);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "CANON",
+        "description": "Ten clean coins in one liquid index on Elysium. Buys fill The Vault for stakers; sells burn supply.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
