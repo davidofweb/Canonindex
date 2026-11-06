@@ -16,6 +16,7 @@ import {
 } from "viem";
 import { createServer as createViteServer } from "vite";
 import { buildEmbeddedDelphi } from "./src/lib/delphi.ts";
+import { buildTestnetKeysPdf } from "./src/lib/testnet-keys-pdf.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
@@ -346,6 +347,15 @@ async function startServer() {
       deployment: activeDeployment,
       sharedDeployment,
     });
+  });
+
+  // Downloadable 3-page Free Testnet Keys & $0 Cost PDF Guide (stamped with active contracts)
+  app.get(["/canon-testnet-keys.pdf", "/api/testnet-keys.pdf"], (_req, res) => {
+    const pdfBytes = buildTestnetKeysPdf(activeDeployment);
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'attachment; filename="canon-testnet-keys-guide.pdf"');
+    res.setHeader("Cache-Control", "no-store");
+    res.send(Buffer.from(pdfBytes));
   });
 
   app.post("/api/deployment", async (req, res) => {

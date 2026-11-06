@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="obsidian">
+<html lang="en" data-theme="elysium">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -8,7 +8,7 @@
       name="description"
       content="Ten clean coins in one liquid index on Elysium. Buys fill The Vault for stakers; sells burn supply."
     />
-    <meta name="theme-color" content="#090B0E" />
+    <meta name="theme-color" content="#07090F" />
     <meta name="robots" content="index, follow" />
 
     <meta property="og:site_name" content="CANON" />
@@ -21,7 +21,7 @@
     <meta property="og:image" content="/canon-og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
-    <meta property="og:image:alt" content="CANON concentric vault index mark on dark obsidian" />
+    <meta property="og:image:alt" content="CANON concentric vault index mark on dark Elysium" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CANON · Ten clean coins. One liquid index." />
@@ -30,7 +30,7 @@
       content="Ten clean coins in one liquid index on Elysium. Buys fill The Vault for stakers; sells burn supply."
     />
     <meta name="twitter:image" content="/canon-og.jpg" />
-    <meta name="twitter:image:alt" content="CANON concentric vault index mark on dark obsidian" />
+    <meta name="twitter:image:alt" content="CANON concentric vault index mark on dark Elysium" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="/fonts/Geist.woff2" as="font" type="font/woff2" crossorigin />
@@ -46,13 +46,14 @@
       (function () {
         try {
           var saved = localStorage.getItem("canon.theme.v1");
+          if (saved === "obsidian") saved = "elysium";
           var bgMap = {
-            obsidian: ["#090B0E", "dark"],
-            cobalt: ["#F4F6FA", "light"],
+            elysium: ["#07090F", "dark"],
+            cobalt: ["#F2F5FB", "light"],
             alabaster: ["#F6F5F0", "light"],
-            titanium: ["#111214", "dark"]
+            titanium: ["#101216", "dark"]
           };
-          var t = saved && bgMap[saved] ? saved : "obsidian";
+          var t = saved && bgMap[saved] ? saved : "elysium";
           document.documentElement.dataset.theme = t;
           document.documentElement.style.colorScheme = bgMap[t][1];
           var meta = document.querySelector('meta[name="theme-color"]');

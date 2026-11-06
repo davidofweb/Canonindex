@@ -1464,6 +1464,25 @@ export function TestnetStudioSheet({
           ariaLabel="Launch mode"
         />
 
+        <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-[14.5px] font-extrabold tracking-[-0.015em] text-ink">
+              Free Testnet Keys &amp; $0 Cost Guide
+            </p>
+            <p className="mt-0.5 text-[12.5px] text-stone">
+              PDF · Every API key, free quota &amp; setup step · <span className="num font-bold text-ink">$0.00/mo</span>
+            </p>
+          </div>
+          <a
+            href="/canon-testnet-keys.pdf"
+            download="canon-testnet-keys-guide.pdf"
+            className="inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-[12px] bg-primary-bg px-4 py-2 text-[13px] font-extrabold tracking-[-0.01em] text-primary-fg transition-transform active:scale-[0.98] hover:opacity-90"
+          >
+            <Download className="h-4 w-4 shrink-0" />
+            <span>Download PDF</span>
+          </a>
+        </div>
+
         {yoyoStage && (
           <YoyoVerifyStage
             posture={yoyoStage.posture}

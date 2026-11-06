@@ -23,6 +23,7 @@ type StoreSnapshot = {
   boot: BootState;
   verify: VerifyState;
   inlineStageCount: number;
+  idle: boolean;
 };
 
 let snapshot: StoreSnapshot = {
@@ -40,6 +41,7 @@ let snapshot: StoreSnapshot = {
     label: "",
   },
   inlineStageCount: 0,
+  idle: false,
 };
 
 const listeners = new Set<() => void>();
@@ -195,6 +197,15 @@ export function useRegisterInlineVerifyStage(enabled: boolean) {
       emit();
     };
   }, [enabled]);
+}
+
+export function setScreenIdle(idle: boolean) {
+  if (snapshot.idle === idle) return;
+  snapshot = {
+    ...snapshot,
+    idle,
+  };
+  emit();
 }
 
 export function useYoyoLoader(): StoreSnapshot {

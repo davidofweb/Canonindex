@@ -177,7 +177,7 @@ export function SegmentedControl<T extends string>({
     <div
       role="tablist"
       aria-label={ariaLabel}
-      className="inline-flex w-full rounded-[13px] bg-well p-1 ring-1 ring-line"
+      className="canon-well inline-flex w-full rounded-[16px] p-1"
     >
       {options.map((opt) => {
         const active = opt.id === value;
@@ -188,9 +188,9 @@ export function SegmentedControl<T extends string>({
             type="button"
             aria-selected={active}
             onClick={() => onChange(opt.id)}
-            className={`min-h-[40px] flex-1 cursor-pointer rounded-[10px] px-3 text-[13.5px] font-bold tracking-[-0.015em] transition-all duration-150 ${
+            className={`min-h-[42px] flex-1 cursor-pointer rounded-[12px] px-3 text-[13.5px] font-bold tracking-[-0.015em] transition-all duration-150 active:scale-[0.98] ${
               active
-                ? "bg-surface text-ink ring-1 ring-line-strong"
+                ? "bg-surface/95 text-ink shadow-[0_4px_12px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.22)] ring-1 ring-line-strong/80"
                 : "text-stone hover:text-ink"
             }`}
           >

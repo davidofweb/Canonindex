@@ -49,7 +49,7 @@ export function BottomSheet({
       />
 
       <div
-        className={`animate-sheet relative z-10 flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[26px] border-t border-line bg-canvas text-ink shadow-[0_-10px_36px_rgb(0_0_0/0.28)] lg:max-h-[85dvh] lg:rounded-[24px] lg:border lg:border-line lg:shadow-[0_20px_56px_rgb(0_0_0/0.28)] ${maxWidthClass}`}
+        className={`animate-sheet oxygen-glass-sheet relative z-10 flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[28px] border-t border-line-strong/70 text-ink lg:max-h-[85dvh] lg:rounded-[26px] lg:border lg:border-line-strong/70 ${maxWidthClass}`}
       >
         <div className="flex justify-center pt-2.5 pb-1 lg:hidden" aria-hidden="true">
           <span className="h-1 w-9 rounded-full bg-line-strong" />

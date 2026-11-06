@@ -56,11 +56,17 @@ export function CanonShell({
       : short(address ?? "");
 
   return (
-    <div className="flex min-h-dvh flex-col bg-canvas text-ink">
+    <div className="relative flex min-h-dvh flex-col bg-canvas text-ink">
+      {/* Elysium UI Zero-Blur Atmospheric Ambient Field */}
+      <div
+        aria-hidden="true"
+        className="elysium-ambient-field pointer-events-none fixed inset-0 -z-10"
+      />
+
       {/* Top Bar:
           - Mobile (<1024px): Scrolls naturally with page (zero sticky top clutter)
-          - Desktop (>=1024px): Strict 3-Zone Sticky Top Bar (CanonWordmark · 5 Links · 1 Wallet Button) */}
-      <header className="border-b border-line bg-canvas/92 lg:sticky lg:top-0 lg:z-30 lg:backdrop-blur-md">
+          - Desktop (>=1024px): Strict 3-Zone Sticky OxygenOS Glass Top Bar */}
+      <header className="border-b border-line/80 bg-canvas/76 backdrop-blur-xl lg:sticky lg:top-0 lg:z-30">
         <div className="mx-auto flex h-15 max-w-6xl items-center justify-between gap-8 px-4 sm:px-6">
           {/* Zone 1: Geometric Vault Wordmark */}
           <button
@@ -143,6 +149,13 @@ export function CanonShell({
             >
               Launch $CANON
             </button>
+            <a
+              href="/canon-testnet-keys.pdf"
+              download="canon-testnet-keys-guide.pdf"
+              className="whitespace-nowrap font-bold text-ink hover:text-signal"
+            >
+              Free Keys PDF ↓
+            </a>
             {deployment && (
               <>
                 <a
@@ -182,12 +195,12 @@ export function CanonShell({
         </div>
       </footer>
 
-      {/* Mobile Native iPhone Bottom Tab Bar (Pinned <9% viewport height; hidden on lg: desktop) */}
+      {/* Mobile OxygenOS Liquid Glass Floating Dock (Pinned <9% viewport height; hidden on lg: desktop) */}
       <nav
         aria-label="Mobile bottom navigation"
-        className="bottom-bar-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas/94 backdrop-blur-lg lg:hidden"
+        className="bottom-bar-safe pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-2 lg:hidden"
       >
-        <div className="mx-auto grid h-[60px] max-w-md grid-cols-5 px-1">
+        <div className="oxygen-glass-dock pointer-events-auto mx-auto grid h-[58px] max-w-md grid-cols-5 rounded-[24px] px-1.5">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const active = item.id === activeTab;
@@ -196,11 +209,17 @@ export function CanonShell({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTab(item.id)}
-                className={`flex min-h-[48px] cursor-pointer flex-col items-center justify-center gap-0.5 transition-colors ${
-                  active ? "text-signal" : "text-stone"
+                className={`relative flex min-h-[48px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-[18px] transition-all duration-150 active:scale-[0.95] ${
+                  active ? "text-signal" : "text-stone hover:text-ink"
                 }`}
               >
-                <Icon className={`h-[20px] w-[20px] ${active ? "stroke-[2.5]" : "stroke-[1.9]"}`} />
+                {active && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-1.5 h-[2.5px] w-5 rounded-full bg-signal"
+                  />
+                )}
+                <Icon className={`h-[19px] w-[19px] ${active ? "stroke-[2.5]" : "stroke-[1.9]"}`} />
                 <span className={`text-[10.5px] tracking-[-0.01em] ${active ? "font-extrabold text-ink" : "font-bold"}`}>
                   {item.label}
                 </span>

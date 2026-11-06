@@ -11,6 +11,7 @@ import { useYoyoAssetProfile } from "@/lib/yoyo-assets";
 import {
   completeBootSequence,
   dismissAddressVerify,
+  setScreenIdle,
   useRegisterInlineVerifyStage,
   useYoyoLoader,
   type VerifyPosture,
@@ -60,6 +61,132 @@ const SIZE_METRICS: Record<
   },
 };
 
+const BASE_EYE_CODES = [
+  "0x4C",
+  "9980",
+  "VAULT",
+  "0xE6",
+  "MINT",
+  "BURN",
+  "100%",
+  "LENS",
+] as const;
+
+const GLITCH_GLYPHS = "0123456789ABCDEF#$%&*+/<>[]{}~";
+
+function mutateCodeLine(line: string, intensity: number): string {
+  const chars = line.split("");
+  const flips = Math.max(1, Math.min(chars.length, intensity));
+  for (let i = 0; i < flips; i++) {
+    const idx = Math.floor(Math.random() * chars.length);
+    chars[idx] = GLITCH_GLYPHS[Math.floor(Math.random() * GLITCH_GLYPHS.length)];
+  }
+  return chars.join("");
+}
+
+function GlitchEyeCodeStream() {
+  const [lines, setLines] = useState<string[]>(() => [...BASE_EYE_CODES]);
+  const [glitchingIndex, setGlitchingIndex] = useState<number | null>(null);
+  const [jitterX, setJitterX] = useState(0);
+
+  useEffect(() => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    let cycleTimer: number | null = null;
+    const burstTimers: number[] = [];
+
+    const clearBursts = () => {
+      while (burstTimers.length > 0) {
+        const id = burstTimers.pop();
+        if (id !== undefined) window.clearTimeout(id);
+      }
+    };
+
+    const triggerGlitchBurst = () => {
+      clearBursts();
+      const targetIdx = Math.floor(Math.random() * BASE_EYE_CODES.length);
+      const secondaryIdx = (targetIdx + 3) % BASE_EYE_CODES.length;
+      const steps = 4;
+
+      for (let step = 0; step < steps; step++) {
+        const t = window.setTimeout(() => {
+          setGlitchingIndex(targetIdx);
+          setJitterX(step % 2 === 0 ? 0.9 : -0.9);
+          setLines(
+            BASE_EYE_CODES.map((base, idx) => {
+              if (idx === targetIdx) return mutateCodeLine(base, 2);
+              if (idx === secondaryIdx) return mutateCodeLine(base, 1);
+              return base;
+            })
+          );
+        }, step * 65);
+        burstTimers.push(t);
+      }
+
+      const settleTimer = window.setTimeout(() => {
+        setGlitchingIndex(null);
+        setJitterX(0);
+        // Leave 1 subtle mutated character on a random line until the next glitch cycle
+        const stickyIdx = Math.floor(Math.random() * BASE_EYE_CODES.length);
+        setLines(
+          BASE_EYE_CODES.map((base, idx) =>
+            idx === stickyIdx ? mutateCodeLine(base, 1) : base
+          )
+        );
+      }, steps * 65 + 45);
+      burstTimers.push(settleTimer);
+    };
+
+    const scheduleNext = () => {
+      const delayMs = 1900 + Math.floor(Math.random() * 1100);
+      cycleTimer = window.setTimeout(() => {
+        triggerGlitchBurst();
+        scheduleNext();
+      }, delayMs);
+    };
+
+    scheduleNext();
+
+    return () => {
+      if (cycleTimer !== null) window.clearTimeout(cycleTimer);
+      clearBursts();
+    };
+  }, []);
+
+  const repeated = [...lines, ...lines];
+
+  return (
+    <div
+      aria-hidden="true"
+      className="animate-yoyo-eye-code pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center text-center font-mono text-[5.5px] leading-[7px] font-extrabold tracking-tighter text-[#051018]/85 select-none"
+    >
+      {repeated.map((code, idx) => {
+        const isGlitching =
+          glitchingIndex !== null && idx % BASE_EYE_CODES.length === glitchingIndex;
+        return (
+          <span
+            key={idx}
+            style={
+              isGlitching
+                ? {
+                    transform: `translate3d(${jitterX}px, 0, 0)`,
+                    color: "rgba(255, 255, 255, 0.96)",
+                    textShadow: "0 0 4px rgba(255, 255, 255, 0.85)",
+                  }
+                : undefined
+            }
+          >
+            {code}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 /**
  * MagicOS-inspired Liquid Glass YOYO Twin-Eye Capsule.
  * Tracks touch drag, pointer cursor, or subtle phone tilt with spring-damped inertia,
@@ -71,6 +198,7 @@ export function YoyoLiquidCapsule({
   onTap,
   ariaLabel = "CANON YOYO optical status",
   withRearRefraction = false,
+  codeInsideEyes = false,
 }: {
   size?: CapsuleSize;
   posture?: VerifyPosture;
@@ -78,6 +206,8 @@ export function YoyoLiquidCapsule({
   ariaLabel?: string;
   /** Enables the counter-shifting glass halo & refracted light ring on the full-screen boot stage */
   withRearRefraction?: boolean;
+  /** Streams live hex & contract codes inside the glowing YOYO eyes */
+  codeInsideEyes?: boolean;
 }) {
   const theme = useTheme();
   const palette = getThemePalette(theme);
@@ -85,6 +215,7 @@ export function YoyoLiquidCapsule({
   const assetProfile = useYoyoAssetProfile();
   const gfxTier = useGraphicsTier();
   const [lensFailed, setLensFailed] = useState(false);
+  const [rippleKey, setRippleKey] = useState(0);
 
   const isLite = gfxTier === "lite";
   const showRearLayer = withRearRefraction && size === "hero";
@@ -492,8 +623,8 @@ export function YoyoLiquidCapsule({
   }, [posture]);
 
   const [sr, sg, sb] = palette.signalRgb;
-  const eyeGlow = `0 0 22px rgba(${sr}, ${sg}, ${sb}, 0.74), 0 0 6px rgba(255, 255, 255, 0.62) inset`;
-  const eyeGradient = `radial-gradient(65% 65% at 45% 32%, #FFFFFF 0%, ${palette.signalHex} 60%, rgba(${sr}, ${sg}, ${sb}, 0.90) 100%)`;
+  const eyeGlow = `0 0 24px rgba(${sr}, ${sg}, ${sb}, 0.86), 0 0 12px rgba(56, 189, 248, 0.62), 0 0 5px rgba(255, 255, 255, 0.78) inset`;
+  const eyeGradient = `radial-gradient(62% 62% at 44% 30%, #FFFFFF 0%, ${palette.signalHex} 54%, #38BDF8 84%, rgba(129, 140, 248, 0.92) 100%)`;
   const isConfirm = posture === "confirm";
 
   const capsuleButton = (
@@ -501,17 +632,28 @@ export function YoyoLiquidCapsule({
       ref={shellRef}
       type="button"
       aria-label={ariaLabel}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         tapImpulseRef.current();
+        if (!isLite) {
+          setRippleKey((k) => k + 1);
+        }
         if (needsPermission && !isLite) {
           void unlockTilt();
-          return;
         }
         onTap?.();
       }}
       className={`liquid-glass-capsule group relative z-10 inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full select-none will-change-transform focus-visible:outline-none ${spec.shellClass}`}
     >
-      {/* Pointer- and tilt-reactive Liquid Glass rim caustic refraction */}
+      {/* Fluid Liquid Glass tap ripple wave */}
+      {rippleKey > 0 && !isLite && (
+        <span
+          key={rippleKey}
+          aria-hidden="true"
+          className="animate-yoyo-ripple pointer-events-none absolute inset-0 rounded-full border border-white/75 shadow-[0_0_16px_rgba(255,255,255,0.45)_inset]"
+        />
+      )}
+      {/* Pointer- and tilt-reactive colorless crystal Liquid Glass rim caustic refraction */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden rounded-full"
@@ -520,7 +662,7 @@ export function YoyoLiquidCapsule({
           ref={causticRef}
           className="absolute -inset-4 opacity-95 will-change-transform"
           style={{
-            background: `radial-gradient(50% 56% at 36% 20%, rgba(255,255,255,0.78) 0%, rgba(${sr},${sg},${sb},0.32) 44%, transparent 74%)`,
+            background: "radial-gradient(50% 56% at 36% 20%, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.22) 44%, transparent 74%)",
           }}
         >
           {size !== "compact" && !isLite && !lensFailed && (
@@ -540,23 +682,23 @@ export function YoyoLiquidCapsule({
                 loading="eager"
                 referrerPolicy="no-referrer"
                 onError={() => setLensFailed(true)}
-                className="h-full w-full rounded-full object-cover mix-blend-screen opacity-75"
+                className="h-full w-full rounded-full object-cover mix-blend-screen opacity-70 grayscale"
               />
             </picture>
           )}
         </div>
-        {/* High-DPI image-set() glass meniscus coat + tilt-reactive top & bottom liquid rim highlights */}
+        {/* High-DPI image-set() glass meniscus coat + tilt-reactive top & bottom crystal rim highlights */}
         {size !== "compact" && !isLite && (
-          <div className="liquid-glass-lens-coat absolute inset-0 rounded-full" />
+          <div className="liquid-glass-lens-coat absolute inset-0 rounded-full grayscale" />
         )}
         <div
           ref={meniscusRef}
-          className="absolute inset-x-[10%] top-[2px] h-[38%] rounded-full bg-gradient-to-b from-white/70 via-white/20 to-transparent will-change-transform"
+          className="absolute inset-x-[10%] top-[2px] h-[38%] rounded-full bg-gradient-to-b from-white/75 via-white/22 to-transparent will-change-transform"
         />
         <div
           className="absolute inset-x-[16%] bottom-[2px] h-[22%] rounded-full"
           style={{
-            background: `linear-gradient(0deg, rgba(${sr},${sg},${sb},0.38) 0%, rgba(255,255,255,0.18) 55%, transparent 100%)`,
+            background: "linear-gradient(0deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.14) 55%, transparent 100%)",
           }}
         />
       </div>
@@ -569,7 +711,7 @@ export function YoyoLiquidCapsule({
             aria-hidden="true"
             className="animate-yoyo-sheen pointer-events-none absolute inset-y-0 left-0 w-[38%]"
             style={{
-              background: `linear-gradient(90deg, transparent 0%, rgba(${sr},${sg},${sb},0.25) 50%, transparent 100%)`,
+              background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.24) 50%, transparent 100%)",
             }}
           />
         )}
@@ -587,7 +729,7 @@ export function YoyoLiquidCapsule({
             <div
               key={key}
               ref={eyeRef}
-              className="relative flex items-center justify-center rounded-full will-change-transform"
+              className="relative flex items-center justify-center overflow-hidden rounded-full will-change-transform"
               style={{
                 width: `${spec.eyeWidth}px`,
                 height: `${spec.eyeHeight}px`,
@@ -609,27 +751,30 @@ export function YoyoLiquidCapsule({
                     strokeWidth="5"
                     strokeLinecap="round"
                     style={{
-                      filter: `drop-shadow(0 0 8px rgba(${sr},${sg},${sb},0.85))`,
+                      filter: `drop-shadow(0 0 8px rgba(${sr},${sg},${sb},0.88))`,
                     }}
                   />
                 </svg>
               ) : (
-                /* Crisp optical corneal catchlight */
-                <span
-                  ref={catchRef}
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-[18%] left-[22%] rounded-full bg-white/95 will-change-transform"
-                  style={{
-                    width: `${Math.max(3, spec.eyeWidth * 0.28)}px`,
-                    height: `${Math.max(3, spec.eyeWidth * 0.28)}px`,
-                  }}
-                />
+                <>
+                  {codeInsideEyes && <GlitchEyeCodeStream />}
+                  {/* Crisp optical corneal catchlight */}
+                  <span
+                    ref={catchRef}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-[18%] left-[22%] rounded-full bg-white/95 will-change-transform"
+                    style={{
+                      width: `${Math.max(3, spec.eyeWidth * 0.28)}px`,
+                      height: `${Math.max(3, spec.eyeWidth * 0.28)}px`,
+                    }}
+                  />
+                </>
               )}
             </div>
           ))}
         </div>
 
-        {/* Front curved Liquid Glass crystal dome & moving diagonal refraction sheen */}
+        {/* Front curved colorless Liquid Glass crystal dome & moving diagonal refraction sheen */}
         <div
           aria-hidden="true"
           className="liquid-glass-dome pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-full"
@@ -638,12 +783,12 @@ export function YoyoLiquidCapsule({
             ref={domeSheenRef}
             className="absolute -inset-x-6 -inset-y-3 will-change-transform"
             style={{
-              background: `linear-gradient(115deg, transparent 24%, rgba(255,255,255,0.22) 42%, rgba(${sr},${sg},${sb},0.14) 50%, transparent 64%)`,
+              background: "linear-gradient(115deg, transparent 22%, rgba(255,255,255,0.26) 42%, rgba(255,255,255,0.12) 52%, transparent 66%)",
             }}
           />
           <div
             ref={visorGlossRef}
-            className="absolute inset-x-[11%] top-[2px] h-[36%] rounded-full bg-gradient-to-b from-white/30 via-white/8 to-transparent will-change-transform"
+            className="absolute inset-x-[11%] top-[2px] h-[36%] rounded-full bg-gradient-to-b from-white/34 via-white/10 to-transparent will-change-transform"
           />
         </div>
       </div>
@@ -661,41 +806,41 @@ export function YoyoLiquidCapsule({
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
         >
-          {/* Soft glowing Liquid Glass aura (zero-blur multi-stop radial gradient for 60fps mobile fill-rate) */}
+          {/* Soft glowing colorless crystal Liquid Glass aura */}
           {!isLite && (
             <div
               ref={rearHaloRef}
               className="yoyo-refraction-halo absolute h-[156px] w-[288px] shrink-0 rounded-full will-change-transform sm:h-[172px] sm:w-[316px]"
               style={{
-                background: `radial-gradient(52% 54% at 50% 50%, rgba(${sr},${sg},${sb},${palette.isDark ? "0.34" : "0.24"}) 0%, rgba(255,255,255,${palette.isDark ? "0.14" : "0.52"}) 42%, rgba(${sr},${sg},${sb},0.08) 68%, transparent 100%)`,
+                background: `radial-gradient(52% 54% at 50% 50%, rgba(255,255,255,${palette.isDark ? "0.22" : "0.58"}) 0%, rgba(255,255,255,${palette.isDark ? "0.10" : "0.32"}) 46%, transparent 100%)`,
               }}
             />
           )}
 
-          {/* Crisp counter-shifting refracted Liquid Glass light ring behind the hero capsule */}
+          {/* Crisp counter-shifting refracted crystal Liquid Glass light ring behind the hero capsule */}
           <div
             ref={rearRingRef}
             className="yoyo-refraction-ring absolute h-[118px] w-[228px] shrink-0 rounded-full will-change-transform sm:h-[128px] sm:w-[248px]"
             style={{
               background: palette.isDark
-                ? `radial-gradient(60% 70% at 50% 50%, transparent 50%, rgba(${sr},${sg},${sb},0.22) 82%, rgba(255,255,255,0.34) 100%)`
-                : `radial-gradient(60% 70% at 50% 50%, transparent 50%, rgba(${sr},${sg},${sb},0.18) 82%, rgba(255,255,255,0.88) 100%)`,
+                ? "radial-gradient(60% 70% at 50% 50%, transparent 50%, rgba(255,255,255,0.14) 82%, rgba(255,255,255,0.34) 100%)"
+                : "radial-gradient(60% 70% at 50% 50%, transparent 50%, rgba(255,255,255,0.45) 82%, rgba(255,255,255,0.92) 100%)",
               boxShadow: palette.isDark
-                ? `0 0 0 1.25px rgba(255,255,255,0.30) inset, 0 0 28px -4px rgba(${sr},${sg},${sb},0.42)`
-                : `0 0 0 1.5px rgba(255,255,255,0.92) inset, 0 12px 30px -6px rgba(${sr},${sg},${sb},0.28)`,
+                ? "0 0 0 1.25px rgba(255,255,255,0.32) inset, 0 0 28px -4px rgba(255,255,255,0.26)"
+                : "0 0 0 1.5px rgba(255,255,255,0.94) inset, 0 12px 30px -6px rgba(11,17,32,0.16)",
             }}
           >
-            {/* Diagonal refracted caustic rim highlights */}
+            {/* Diagonal refracted crystal caustic rim highlights */}
             <div
               className="absolute inset-x-[12%] top-0 h-[2px] rounded-full"
               style={{
-                background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,${palette.isDark ? "0.88" : "1"}) 36%, ${palette.signalHex} 68%, transparent 100%)`,
+                background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,${palette.isDark ? "0.90" : "1"}) 50%, transparent 100%)`,
               }}
             />
             <div
               className="absolute inset-x-[16%] bottom-0 h-[2px] rounded-full"
               style={{
-                background: `linear-gradient(90deg, transparent 0%, ${palette.signalHex} 32%, rgba(255,255,255,${palette.isDark ? "0.78" : "0.96"}) 68%, transparent 100%)`,
+                background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,${palette.isDark ? "0.78" : "0.96"}) 50%, transparent 100%)`,
               }}
             />
           </div>
@@ -776,20 +921,19 @@ export function YoyoVerifyStage({
   useRegisterInlineVerifyStage(true);
   const theme = useTheme();
   const palette = getThemePalette(theme);
-  const [sr, sg, sb] = palette.signalRgb;
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className="relative flex flex-col items-center justify-center overflow-hidden rounded-[22px] bg-well/65 px-5 py-6 text-center ring-1 ring-line"
+      className="canon-well relative flex flex-col items-center justify-center overflow-hidden rounded-[22px] px-5 py-6 text-center"
     >
-      {/* Subtle backlit signal aura so the translucent Liquid Glass capsule visibly refracts light inside sheets */}
+      {/* Subtle backlit crystal aura so the translucent Liquid Glass capsule visibly refracts light inside sheets */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-2 h-24 w-48 rounded-full"
+        className="pointer-events-none absolute top-2 h-24 w-52 rounded-full"
         style={{
-          background: `radial-gradient(50% 50% at 50% 50%, rgba(${sr},${sg},${sb},${palette.isDark ? "0.26" : "0.18"}) 0%, rgba(255,255,255,${palette.isDark ? "0.08" : "0.45"}) 48%, transparent 100%)`,
+          background: `radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,${palette.isDark ? "0.14" : "0.55"}) 0%, transparent 100%)`,
         }}
       />
 
@@ -1077,7 +1221,7 @@ export function YoyoBootScreen() {
 }
 
 /**
- * Dynamic top MagicOS Liquid Glass Capsule that glides down automatically
+ * Dynamic top Liquid Glass Capsule that glides down automatically
  * whenever verifying a 0x wallet or token address outside an open stage sheet.
  */
 export function YoyoVerifyOverlay() {
@@ -1117,6 +1261,75 @@ export function YoyoVerifyOverlay() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+const IDLE_TRIGGER_MS = 10_000;
+
+/**
+ * After 10 seconds of screen idle, all page texts are hidden and only the
+ * YOYO Liquid Glass capsule with live codes running inside its eyes appears
+ * at the center of the screen. Any user activity restores the screen immediately.
+ */
+export function YoyoIdleEyesOverlay() {
+  const { boot, idle } = useYoyoLoader();
+
+  useEffect(() => {
+    if (boot.active) return;
+
+    let idleTimer: number | null = null;
+
+    const scheduleIdle = () => {
+      if (idleTimer) window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
+        if (document.hidden) {
+          scheduleIdle();
+          return;
+        }
+        setScreenIdle(true);
+      }, IDLE_TRIGGER_MS);
+    };
+
+    const onActivity = () => {
+      setScreenIdle(false);
+      scheduleIdle();
+    };
+
+    scheduleIdle();
+
+    const events: ReadonlyArray<keyof WindowEventMap> = [
+      "pointerdown",
+      "pointermove",
+      "touchstart",
+      "touchmove",
+      "wheel",
+      "keydown",
+      "scroll",
+    ];
+    events.forEach((ev) => window.addEventListener(ev, onActivity, { passive: true }));
+
+    return () => {
+      if (idleTimer) window.clearTimeout(idleTimer);
+      events.forEach((ev) => window.removeEventListener(ev, onActivity));
+    };
+  }, [boot.active]);
+
+  if (!idle || boot.active) {
+    return null;
+  }
+
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-[92] flex items-center justify-center overflow-hidden select-none"
+    >
+      <YoyoLiquidCapsule
+        size="hero"
+        posture="idle"
+        codeInsideEyes
+        ariaLabel=""
+      />
     </div>
   );
 }

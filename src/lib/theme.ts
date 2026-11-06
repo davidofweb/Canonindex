@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-export type ThemeId = "obsidian" | "cobalt" | "alabaster" | "titanium";
+export type ThemeId = "elysium" | "cobalt" | "alabaster" | "titanium";
 
 export type ThemeMeta = {
   id: ThemeId;
@@ -21,19 +21,19 @@ export type ThemeMeta = {
 
 export const THEMES: ReadonlyArray<ThemeMeta> = [
   {
-    id: "obsidian",
-    label: "Obsidian & Mint",
-    shortLabel: "Obsidian",
+    id: "elysium",
+    label: "Elysium & Mint",
+    shortLabel: "Elysium",
     isDark: true,
-    canvasHex: "#090B0E",
-    surfaceHex: "#10141A",
-    inkHex: "#F5F7FA",
-    stoneHex: "#8A94A4",
-    lineHex: "#1E2530",
+    canvasHex: "#07090F",
+    surfaceHex: "#0E131D",
+    inkHex: "#F5F8FF",
+    stoneHex: "#8E9BB0",
+    lineHex: "#1C2536",
     signalHex: "#4CE6C0",
     forestHex: "#34D399",
-    inkRgb: [245, 247, 250],
-    stoneRgb: [138, 148, 164],
+    inkRgb: [245, 248, 255],
+    stoneRgb: [142, 155, 176],
     signalRgb: [76, 230, 192],
   },
   {
@@ -41,7 +41,7 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
     label: "Glacier & Cobalt",
     shortLabel: "Cobalt",
     isDark: false,
-    canvasHex: "#F4F6FA",
+    canvasHex: "#F2F5FB",
     surfaceHex: "#FFFFFF",
     inkHex: "#0B1120",
     stoneHex: "#526077",
@@ -73,11 +73,11 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
     label: "Titanium & Lime",
     shortLabel: "Titanium",
     isDark: true,
-    canvasHex: "#111214",
-    surfaceHex: "#181A1E",
+    canvasHex: "#101216",
+    surfaceHex: "#171A21",
     inkHex: "#F2F3F5",
     stoneHex: "#8E939E",
-    lineHex: "#272B33",
+    lineHex: "#262B35",
     signalHex: "#B8FF2C",
     forestHex: "#4ADE80",
     inkRgb: [242, 243, 245],
@@ -87,10 +87,10 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
 ];
 
 export const THEME_STORAGE_KEY = "canon.theme.v1";
-const DEFAULT_THEME: ThemeId = "obsidian";
+const DEFAULT_THEME: ThemeId = "elysium";
 
 function isValidTheme(v: unknown): v is ThemeId {
-  return v === "obsidian" || v === "cobalt" || v === "alabaster" || v === "titanium";
+  return v === "elysium" || v === "cobalt" || v === "alabaster" || v === "titanium";
 }
 
 export function getThemePalette(id: ThemeId): ThemeMeta {
@@ -114,7 +114,10 @@ function applyDomTheme(theme: ThemeId) {
 if (typeof window !== "undefined") {
   try {
     const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (isValidTheme(saved)) {
+    if (saved === "obsidian") {
+      currentTheme = "elysium";
+      window.localStorage.setItem(THEME_STORAGE_KEY, "elysium");
+    } else if (isValidTheme(saved)) {
       currentTheme = saved;
     } else if (isValidTheme(document.documentElement.dataset.theme)) {
       currentTheme = document.documentElement.dataset.theme;

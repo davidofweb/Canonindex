@@ -11,6 +11,7 @@ import {
   type VaultSlice,
 } from "./code-art";
 import { SegmentedControl, type TabKey } from "./shared";
+import { YoyoLiquidCapsule } from "./yoyo-eye";
 
 const HERO_RAIN_MASK =
   "radial-gradient(ellipse 62% 46% at 50% 30%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.42) 44%, #000 94%), linear-gradient(to bottom, #000 0%, #000 68%, transparent 98%)";
@@ -121,7 +122,14 @@ export function HomeView({
         </div>
 
         <div className="relative mx-auto flex flex-col items-center text-center">
-          <p className="ui-label mb-5 text-signal">Liquid Index · Elysium Testnet</p>
+          <div className="mb-5">
+            <YoyoLiquidCapsule
+              size="stage"
+              posture="idle"
+              ariaLabel="Tap YOYO to open full-screen Liquid Glass view"
+            />
+          </div>
+          <p className="ui-label mb-4 text-signal">Liquid Index · Elysium Testnet</p>
 
           <h1 className="heading-hero max-w-[15ch] text-balance text-[42px] text-ink sm:text-[58px] lg:text-[68px]">
             Ten clean coins.

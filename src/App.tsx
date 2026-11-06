@@ -22,7 +22,7 @@ import { CanonShell } from "@/components/canon/shell";
 import { TestnetStudioSheet } from "@/components/canon/testnet-studio";
 import { TradeView } from "@/components/canon/trade-view";
 import { VoteView } from "@/components/canon/vote-view";
-import { YoyoBootScreen, YoyoVerifyOverlay } from "@/components/canon/yoyo-eye";
+import { YoyoBootScreen, YoyoIdleEyesOverlay, YoyoVerifyOverlay } from "@/components/canon/yoyo-eye";
 import { elysium, syncDeploymentFromServer, useDeploymentVersion } from "@/lib/chain/config";
 import { INITIAL_DELPHI, liveRound, readDelphi, type Delphi } from "@/lib/delphi";
 import { INITIAL_LIVE, readLive, type Live } from "@/lib/live";
@@ -31,6 +31,7 @@ import {
   finishAddressVerify,
   startAddressVerify,
   updateBootProgress,
+  useYoyoLoader,
 } from "@/lib/yoyo-loader";
 import { navigate, useLocationState } from "@/shims/router";
 
@@ -154,6 +155,7 @@ function WalletAddressVerifyWatcher() {
 }
 
 function CanonWorkspace() {
+  const { idle } = useYoyoLoader();
   const { pathname } = useLocationState();
   const route = parseRoute(pathname);
   const deployVersion = useDeploymentVersion();
@@ -287,9 +289,13 @@ function CanonWorkspace() {
     <>
       <YoyoBootScreen />
       <YoyoVerifyOverlay />
+      <YoyoIdleEyesOverlay />
       <WalletAddressVerifyWatcher />
 
-      <div key={deployVersion} className="contents">
+      <div
+        key={deployVersion}
+        className={`transition-opacity duration-300 ${idle ? "pointer-events-none opacity-0 select-none" : "opacity-100"}`}
+      >
         <CanonShell
           activeTab={route.tab}
           onSelectTab={handleSelectTab}

@@ -1,6 +1,6 @@
 {
-  "summary": "Mobile-first guided phone wallet launch flow for deploying $CANON on Elysium Testnet (Chain 99801), seeding pool liquidity and a free backer drip, and generating portable live share links and on-chain contract proof for crowdfunders and Elysium/Hyperliquid grant reviewers—without adding extra pitch pages.",
-  "updatedAt": "2026-11-03T02:14:36.913225519Z",
+  "summary": "Implementation plan to generate and serve a minimalist, print-ready PDF guide detailing every API key, public endpoint, self-generated wallet key, free quota limit, and $0.00 monthly cost estimate required to run the $CANON Elysium Testnet live end-to-end, paired with a one-tap mobile download control inside the Launch $CANON sheet.",
+  "updatedAt": "2026-11-03T10:37:51.103016374Z",
   "requestFeedback": true,
   "userFacing": true
 }
