@@ -93,12 +93,7 @@ function MinimalistQrMatrix({ uri }: { uri: string }) {
   const center = total / 2;
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[236px] rounded-[20px] bg-white p-3 ring-1 ring-line">
-      {/* Architectural corner ticks */}
-      <span className="pointer-events-none absolute top-2.5 left-2.5 h-2.5 w-2.5 border-t-2 border-l-2 border-signal" />
-      <span className="pointer-events-none absolute top-2.5 right-2.5 h-2.5 w-2.5 border-t-2 border-r-2 border-signal" />
-      <span className="pointer-events-none absolute bottom-2.5 left-2.5 h-2.5 w-2.5 border-b-2 border-l-2 border-signal" />
-      <span className="pointer-events-none absolute right-2.5 bottom-2.5 h-2.5 w-2.5 border-r-2 border-b-2 border-signal" />
+    <div className="relative mx-auto aspect-square w-full max-w-[236px] rounded-[20px] bg-white p-3 shadow-sm">
 
       <svg
         viewBox={`0 0 ${total} ${total}`}
@@ -361,7 +356,7 @@ export function WalletSheet({
                       href={w.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex min-h-[46px] items-center justify-between rounded-[14px] bg-surface px-3.5 py-2.5 text-[14px] font-bold text-ink ring-1 ring-line transition-colors hover:bg-well"
+                      className="flex min-h-[46px] items-center justify-between rounded-[14px] bg-surface px-3.5 py-2.5 text-[14px] font-bold text-ink transition-colors hover:bg-well"
                     >
                       <span>{w.label}</span>
                       <ArrowUpRight className="h-3.5 w-3.5 text-stone-light" />
@@ -390,7 +385,7 @@ export function WalletSheet({
             )}
 
             {connect.error && (
-              <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] font-semibold text-crimson ring-1 ring-crimson/25">
+              <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] font-semibold text-crimson">
                 {plainReason(connect.error)}
               </p>
             )}
@@ -438,10 +433,10 @@ export function WalletSheet({
                         },
                       );
                     }}
-                    className="flex min-h-[58px] w-full cursor-pointer items-center justify-between rounded-[18px] bg-surface px-4 py-3 text-left text-ink ring-1 ring-line transition-colors hover:bg-well"
+                    className="flex min-h-[58px] w-full cursor-pointer items-center justify-between rounded-[18px] bg-surface px-4 py-3 text-left text-ink transition-colors hover:bg-well"
                   >
                     <span className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-well text-ink ring-1 ring-line">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-well text-ink">
                         {isWC ? <Smartphone className="h-4.5 w-4.5" /> : <Wallet className="h-4.5 w-4.5" />}
                       </span>
                       <span>
@@ -462,7 +457,7 @@ export function WalletSheet({
             </div>
 
             {connect.error && (
-              <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] font-semibold text-crimson ring-1 ring-crimson/25">
+              <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] font-semibold text-crimson">
                 {plainReason(connect.error)}
               </p>
             )}
@@ -474,7 +469,7 @@ export function WalletSheet({
                   onClose();
                   onOpenStudio();
                 }}
-                className="flex min-h-[50px] w-full cursor-pointer items-center justify-between rounded-[16px] bg-surface px-4 py-3 text-left ring-1 ring-line transition-colors hover:bg-well"
+                className="flex min-h-[50px] w-full cursor-pointer items-center justify-between rounded-[16px] bg-surface px-4 py-3 text-left transition-colors hover:bg-well"
               >
                 <span className="text-[14px] font-bold text-ink">
                   Launch Your $CANON · Guided
@@ -483,7 +478,7 @@ export function WalletSheet({
               </button>
             )}
 
-            <div className="border-t border-line pt-4">
+            <div className="pt-4">
               <p className="ui-label mb-2">Appearance</p>
               <ThemeSwitcher className="w-full justify-between" />
             </div>
@@ -510,7 +505,7 @@ export function WalletSheet({
           )}
 
           {/* Identity row */}
-          <div className="flex items-center justify-between gap-3 rounded-[18px] bg-surface p-4 ring-1 ring-line">
+          <div className="flex items-center justify-between gap-3 rounded-[18px] bg-surface p-4">
             <div className="flex min-w-0 items-center gap-3">
               <CanonWalletSigil address={me} size={48} />
               <div className="min-w-0">
@@ -556,7 +551,7 @@ export function WalletSheet({
           ) : (
             <>
               {/* Balances */}
-              <div className="divide-y divide-line rounded-[20px] bg-surface px-4 ring-1 ring-line">
+              <div className="divide-y divide-line rounded-[20px] bg-surface px-4">
                 <div className="flex items-center justify-between py-3.5">
                   <span className="text-[14px] font-semibold text-stone">Test HYPE (Gas)</span>
                   <span className="num text-[15px] font-bold text-ink">
@@ -613,7 +608,7 @@ export function WalletSheet({
                   onClose();
                   onOpenPass();
                 }}
-                className="flex min-h-[52px] w-full cursor-pointer items-center justify-between rounded-[18px] bg-well px-4 py-3 text-left text-ink ring-1 ring-line transition-colors hover:bg-well-hover"
+                className="flex min-h-[52px] w-full cursor-pointer items-center justify-between rounded-[18px] bg-well px-4 py-3 text-left text-ink transition-colors hover:bg-well-hover"
               >
                 <span className="flex items-center gap-2.5 text-[14.5px] font-bold">
                   <Sparkles className="h-4.5 w-4.5 text-signal" />
@@ -629,7 +624,7 @@ export function WalletSheet({
                     onClose();
                     onOpenStudio();
                   }}
-                  className="flex min-h-[50px] w-full cursor-pointer items-center justify-between rounded-[18px] bg-surface px-4 py-3 text-left ring-1 ring-line transition-colors hover:bg-well"
+                  className="flex min-h-[50px] w-full cursor-pointer items-center justify-between rounded-[18px] bg-surface px-4 py-3 text-left transition-colors hover:bg-well"
                 >
                   <span className="text-[14px] font-bold text-ink">
                     Launch Your $CANON · Guided
@@ -640,7 +635,7 @@ export function WalletSheet({
             </>
           )}
 
-          <div className="border-t border-line pt-4">
+          <div className="pt-4">
             <p className="ui-label mb-2">Appearance</p>
             <ThemeSwitcher className="w-full justify-between" />
           </div>
@@ -1005,7 +1000,7 @@ export function HypePassSheet({
           />
         )}
         {!onChain ? (
-          <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+          <div className="rounded-[20px] bg-surface p-5">
             <p className="text-[15px] leading-relaxed text-stone">
               Connect your Elysium wallet first to check or link your Hyperliquid HYPE balance.
             </p>
@@ -1021,7 +1016,7 @@ export function HypePassSheet({
             </button>
           </div>
         ) : valid && passport && deployment ? (
-          <div className="space-y-4 rounded-[18px] bg-surface p-5 ring-1 ring-line">
+          <div className="space-y-4 rounded-[18px] bg-surface p-5">
             <div className="flex items-center gap-4">
               <CanonWalletSigil address={me} size={58} />
               <div>
@@ -1049,7 +1044,7 @@ export function HypePassSheet({
             </div>
 
             {boostWaiting && (
-              <div className="flex items-center justify-between gap-3 rounded-2xl bg-signal/12 px-4 py-3 text-[13.5px] text-ink ring-1 ring-signal/30">
+              <div className="flex items-center justify-between gap-3 rounded-2xl bg-signal/12 px-4 py-3 text-[13.5px] text-ink">
                 <span className="font-semibold">Apply this boost to your active stake</span>
                 <button
                   type="button"
@@ -1113,7 +1108,7 @@ export function HypePassSheet({
             <TxFeedback error={tx.error} lastTx={tx.lastTx} />
           </div>
         ) : zeroReasons ? (
-          <div className="space-y-3 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+          <div className="space-y-3 rounded-[20px] bg-surface p-5">
             <p className="heading-card text-[17px] text-ink">Below Tier 1 right now</p>
             <p className="text-[14px] leading-relaxed text-stone">
               That wallet does not reach 10 counted HYPE yet, so nothing was linked on-chain:
@@ -1132,7 +1127,7 @@ export function HypePassSheet({
             </button>
           </div>
         ) : !ch ? (
-          <div className="space-y-4 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+          <div className="space-y-4 rounded-[20px] bg-surface p-5">
             <div className="flex items-center justify-between text-[13.5px]">
               <span className="font-semibold text-stone">Elysium Wallet</span>
               <span className="num font-bold text-ink">{short(me)}</span>
@@ -1185,7 +1180,7 @@ export function HypePassSheet({
             </button>
           </div>
         ) : (
-          <div className="space-y-3 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+          <div className="space-y-3 rounded-[20px] bg-surface p-5">
             <div className="flex items-center justify-between gap-3 py-1">
               <div>
                 <p className="text-[14.5px] font-bold text-ink">
@@ -1210,7 +1205,7 @@ export function HypePassSheet({
             </div>
 
             {!sameWallet && (
-              <div className="flex items-center justify-between gap-3 border-t border-line pt-3">
+              <div className="flex items-center justify-between gap-3 pt-3">
                 <div>
                   <p className="text-[14.5px] font-bold text-ink">
                     2. Sign with Elysium {short(ch.e)}
@@ -1255,11 +1250,11 @@ export function HypePassSheet({
         )}
 
         {err && (
-          <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] text-crimson ring-1 ring-crimson/25">{err}</p>
+          <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] text-crimson">{err}</p>
         )}
 
         {/* Tier table */}
-        <div className="rounded-[20px] bg-surface p-4 ring-1 ring-line">
+        <div className="rounded-[20px] bg-surface p-4">
           <p className="ui-label">Pass Tiers</p>
           <div className="mt-2.5 divide-y divide-line">
             {PASS_TIERS.map((t) => (
@@ -1334,7 +1329,7 @@ export function CoinReportSheet({
     >
       <div className="space-y-5">
         {/* Verdict & plain-English summary */}
-        <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+        <div className="rounded-[20px] bg-surface p-5">
           <p className={`text-[13px] font-extrabold uppercase tracking-wider ${tone.colorClass}`}>
             {tone.text} Verdict
           </p>
@@ -1352,7 +1347,7 @@ export function CoinReportSheet({
           )}
 
           {note && (
-            <p className="mt-3 border-t border-line pt-3 text-[13.5px] font-semibold text-ink">
+            <p className="mt-3 pt-3 text-[13.5px] font-semibold text-ink">
               {note.in
                 ? `In The Vault right now (Round ${note.round}).`
                 : note.was
@@ -1384,7 +1379,7 @@ export function CoinReportSheet({
 
         {/* Three pattern detectors */}
         {detail?.report && (
-          <div className="rounded-[20px] bg-surface p-4 ring-1 ring-line">
+          <div className="rounded-[20px] bg-surface p-4">
             <p className="ui-label">Pattern Checks</p>
             <div className="mt-2 divide-y divide-line">
               {(["bundle", "wash", "concentration"] as const).map((chk) => {
@@ -1498,7 +1493,7 @@ export function DisputeSheet({
       subtitle="The Lens reports transaction patterns, never personal intent. Share proof if a pattern was misread."
     >
       {sent ? (
-        <div className="space-y-4 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+        <div className="space-y-4 rounded-[20px] bg-surface p-5">
           <p className="heading-card text-[18px] text-forest">Challenge Recorded</p>
           <p className="text-[14.5px] leading-relaxed text-stone">
             Your note for <span className="num font-bold text-ink">{short(activeToken)}</span> has been logged for review against the explorer transactions.
@@ -1570,7 +1565,7 @@ export function DisputeSheet({
           )}
 
           {err && (
-            <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] text-crimson ring-1 ring-crimson/25">{err}</p>
+            <p className="rounded-2xl bg-crimson/12 px-3.5 py-3 text-[13.5px] text-crimson">{err}</p>
           )}
 
           <button type="submit" disabled={sending} className="btn-signal w-full">
@@ -1743,7 +1738,7 @@ export function FeeLockSheet({
     >
       <div className="space-y-5">
         {launched && (
-          <div className="rounded-[20px] bg-forest/12 p-4 text-forest ring-1 ring-forest/25">
+          <div className="rounded-[20px] bg-forest/12 p-4 text-forest">
             <p className="heading-card text-[17px]">{launched.symbol} is live with permanent fee rules</p>
             <div className="mt-2 flex flex-wrap gap-4 text-[13.5px] font-bold underline underline-offset-2">
               <a href={explorer("token", launched.token)} target="_blank" rel="noreferrer">
@@ -1883,7 +1878,7 @@ export function FeeLockSheet({
         <TxFeedback error={tx.error} lastTx={tx.lastTx} />
 
         {/* Live Fee Lock routers read from Elysium events */}
-        <div className="rounded-[20px] bg-surface p-4 ring-1 ring-line">
+        <div className="rounded-[20px] bg-surface p-4">
           <div className="flex items-center justify-between">
             <p className="ui-label">Live Fee Lock Routers on Elysium</p>
             <span className="num text-[12px] font-bold text-stone">{deployedList.length}</span>
@@ -1947,7 +1942,7 @@ export function TermsSheet({ open, onClose }: { open: boolean; onClose: () => vo
       subtitle="Plain English · Elysium Testnet"
     >
       <div className="space-y-4 text-[14.5px] leading-relaxed text-ink-soft">
-        <div className="space-y-3 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+        <div className="space-y-3 rounded-[20px] bg-surface p-5">
           <p className="font-bold text-ink">1. Testnet Coins Have Zero Monetary Value</p>
           <p className="text-stone">
             CANON is currently live on the Elysium Testnet. Test HYPE, test USDC, $CANON, and all Vault coins are free test tokens created solely to try the system before mainnet.

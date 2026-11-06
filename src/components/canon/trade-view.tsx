@@ -292,7 +292,7 @@ export function TradeView({
 
       {/* Minimalist Free Drip Strip */}
       {canClaimDrip && drip && (
-        <div className="flex flex-col justify-between gap-4 rounded-[18px] border border-signal bg-surface p-5 sm:flex-row sm:items-center">
+        <div className="flex flex-col justify-between gap-4 rounded-[18px] bg-surface p-5 sm:flex-row sm:items-center">
           <div>
             <p className="ui-label text-signal">One-Time Testnet Drip</p>
             <p className="heading-card mt-1 text-[18px] text-ink">
@@ -366,7 +366,7 @@ export function TradeView({
                       key={preset}
                       type="button"
                       onClick={() => setAmount(String(preset))}
-                      className="num min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-ink ring-1 ring-line hover:bg-well-hover"
+                      className="num min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-ink hover:bg-well-hover"
                     >
                       ${preset}
                     </button>
@@ -377,7 +377,7 @@ export function TradeView({
                       type="button"
                       disabled={canonBal === 0n}
                       onClick={() => setShare(pct)}
-                      className="num min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-ink ring-1 ring-line hover:bg-well-hover disabled:opacity-40"
+                      className="num min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-ink hover:bg-well-hover disabled:opacity-40"
                     >
                       {pct}%
                     </button>
@@ -386,7 +386,7 @@ export function TradeView({
                 type="button"
                 disabled={side === "buy" ? usdcBal === 0n : canonBal === 0n}
                 onClick={() => setShare(100)}
-                className="min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-signal ring-1 ring-line hover:bg-well-hover disabled:opacity-40"
+                className="min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-signal hover:bg-well-hover disabled:opacity-40"
               >
                 Max
               </button>
@@ -394,7 +394,7 @@ export function TradeView({
           </div>
 
           <div className="my-2 flex justify-center" aria-hidden="true">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-stone">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-surface text-stone">
               <ArrowDown className="h-3.5 w-3.5 stroke-[2.25]" />
             </span>
           </div>
@@ -434,7 +434,7 @@ export function TradeView({
           <TxFeedback error={tx.error} lastTx={tx.lastTx} />
 
           {canonBal > 0n && (
-            <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-[13.5px]">
+            <div className="mt-4 flex items-center justify-between gap-3 pt-4 text-[13.5px]">
               <span className="text-stone">
                 Holding <strong className="num font-bold text-ink">{fmt(canonBal)} $CANON</strong>
               </span>
@@ -451,10 +451,10 @@ export function TradeView({
 
         {/* SIDEBAR: TESTNET FAUCETS & FEE TRANSPARENCY */}
         <aside className="space-y-6 lg:col-span-5">
-          <div className="border-t border-line pt-5 lg:border-t-0 lg:pt-0">
+          <div className="pt-5 lg:pt-0">
             <p className="ui-label">Testnet Supplies</p>
-            <div className="mt-3 divide-y divide-line border-y border-line">
-              <div className="flex items-center justify-between gap-3 py-3.5">
+            <div className="mt-3 space-y-1">
+              <div className="flex items-center justify-between gap-3 py-3">
                 <div>
                   <p className="flex items-center gap-1.5 text-[14px] font-bold text-ink">
                     {hasGas && <Check className="h-4 w-4 text-forest" />}
@@ -475,7 +475,7 @@ export function TradeView({
                 </a>
               </div>
 
-              <div className="flex items-center justify-between gap-3 py-3.5">
+              <div className="flex items-center justify-between gap-3 py-3">
                 <div>
                   <p className="flex items-center gap-1.5 text-[14px] font-bold text-ink">
                     {usdcBal > 0n && <Check className="h-4 w-4 text-forest" />}
@@ -511,12 +511,12 @@ export function TradeView({
             <p className="ui-label">
               {side === "buy" ? "Buy Fee Route · 1.00%" : "Sell Fee Route · 1.00%"}
             </p>
-            <div className="mt-3 divide-y divide-line border-y border-line text-[13.5px]">
-              <div className="flex items-center justify-between py-3">
+            <div className="mt-3 space-y-1 text-[13.5px]">
+              <div className="flex items-center justify-between py-2.5">
                 <span className="text-stone">Ascend Exchange</span>
                 <span className="num font-bold text-ink">0.500%</span>
               </div>
-              <div className="flex items-center justify-between py-3">
+              <div className="flex items-center justify-between py-2.5">
                 <span className="text-stone">
                   {side === "buy" ? "Vault Coin Purchases" : "Permanent $CANON Burn"}
                 </span>
@@ -528,7 +528,7 @@ export function TradeView({
                   <CodeScramble value={side === "buy" ? "+0.425%" : "-0.425%"} />
                 </span>
               </div>
-              <div className="flex items-center justify-between py-3">
+              <div className="flex items-center justify-between py-2.5">
                 <span className="text-stone">Keeper Operations</span>
                 <span className="num font-bold text-ink">0.075%</span>
               </div>

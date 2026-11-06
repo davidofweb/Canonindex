@@ -5,7 +5,9 @@ import {
   CheckSquare,
   Compass,
   Layers,
+  Moon,
   ScanSearch,
+  Sun,
 } from "lucide-react";
 import {
   deployment,
@@ -14,6 +16,7 @@ import {
   isCustomCanonActive,
   useDeploymentVersion,
 } from "@/lib/chain/config";
+import { getThemePalette, toggleColorMode, useTheme } from "@/lib/theme";
 import { CanonWordmark } from "./code-art";
 import { short, ThemeSwitcher, type TabKey } from "./shared";
 
@@ -48,6 +51,8 @@ export function CanonShell({
   const { address, isConnected, chainId } = useConnection();
   const wrongChain = isConnected && chainId !== elysium.id;
   const customActive = isCustomCanonActive();
+  const activeTheme = useTheme();
+  const isDark = getThemePalette(activeTheme).isDark;
 
   const walletButtonLabel = !isConnected
     ? "Connect"
@@ -66,7 +71,7 @@ export function CanonShell({
       {/* Top Bar:
           - Mobile (<1024px): Scrolls naturally with page (zero sticky top clutter)
           - Desktop (>=1024px): Strict 3-Zone Sticky OxygenOS Glass Top Bar */}
-      <header className="border-b border-line/80 bg-canvas/76 backdrop-blur-xl lg:sticky lg:top-0 lg:z-30">
+      <header className="bg-canvas/76 backdrop-blur-xl lg:sticky lg:top-0 lg:z-30">
         <div className="mx-auto flex h-15 max-w-6xl items-center justify-between gap-8 px-4 sm:px-6">
           {/* Zone 1: Geometric Vault Wordmark */}
           <button
@@ -100,20 +105,36 @@ export function CanonShell({
             })}
           </nav>
 
-          {/* Zone 3: Single Minimalist Wallet Action */}
-          <button
-            type="button"
-            onClick={onOpenWallet}
-            className={`code-glitch inline-flex min-h-[40px] shrink-0 cursor-pointer items-center whitespace-nowrap rounded-[12px] px-4 text-[13.5px] font-bold tracking-[-0.015em] transition-colors ${
-              wrongChain
-                ? "bg-signal text-signal-ink"
-                : isConnected
-                  ? "border border-line-strong bg-surface text-ink hover:bg-well"
-                  : "bg-primary-bg text-primary-fg hover:opacity-90"
-            }`}
-          >
-            <span className={isConnected && !wrongChain ? "num" : ""}>{walletButtonLabel}</span>
-          </button>
+          {/* Zone 3: Quick Dark/Light Toggle + Single Minimalist Wallet Action */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleColorMode}
+              className="inline-flex min-h-[40px] min-w-[40px] cursor-pointer items-center justify-center rounded-[12px] bg-surface text-ink transition-transform hover:bg-well active:scale-95 shadow-sm"
+              aria-label={isDark ? "Switch to Alabaster light theme" : "Switch to Elysium UI dark theme"}
+              title={isDark ? "Light (Alabaster)" : "Dark (Elysium UI)"}
+            >
+              {isDark ? (
+                <Sun className="h-[18px] w-[18px] text-amber-tone" />
+              ) : (
+                <Moon className="h-[18px] w-[18px] text-ink" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={onOpenWallet}
+              className={`code-glitch inline-flex min-h-[40px] shrink-0 cursor-pointer items-center whitespace-nowrap rounded-[12px] px-4 text-[13.5px] font-bold tracking-[-0.015em] transition-colors ${
+                wrongChain
+                  ? "bg-signal text-signal-ink"
+                  : isConnected
+                    ? "bg-surface text-ink hover:bg-well"
+                    : "bg-primary-bg text-primary-fg hover:opacity-90"
+              }`}
+            >
+              <span className={isConnected && !wrongChain ? "num" : ""}>{walletButtonLabel}</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -123,7 +144,7 @@ export function CanonShell({
       </main>
 
       {/* Minimalist Architectural Footer + 4-Skin Theme Switcher */}
-      <footer className="border-t border-line pb-safe-nav lg:pb-0">
+      <footer className="pb-safe-nav lg:pb-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-7 text-[12.5px] text-stone sm:px-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
@@ -141,21 +162,7 @@ export function CanonShell({
             <ThemeSwitcher />
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-line pt-4 font-semibold">
-            <button
-              type="button"
-              onClick={onOpenStudio}
-              className="cursor-pointer font-bold text-signal hover:underline"
-            >
-              Launch $CANON
-            </button>
-            <a
-              href="/canon-testnet-keys.pdf"
-              download="canon-testnet-keys-guide.pdf"
-              className="whitespace-nowrap font-bold text-ink hover:text-signal"
-            >
-              Free Keys PDF ↓
-            </a>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 pt-3 font-semibold">
             {deployment && (
               <>
                 <a

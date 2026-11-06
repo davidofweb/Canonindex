@@ -45,13 +45,10 @@
     <script>
       (function () {
         try {
-          var saved = localStorage.getItem("canon.theme.v1");
-          if (saved === "obsidian") saved = "elysium";
+          var saved = localStorage.getItem("canon.theme.v2");
           var bgMap = {
             elysium: ["#07090F", "dark"],
-            cobalt: ["#F2F5FB", "light"],
-            alabaster: ["#F6F5F0", "light"],
-            titanium: ["#101216", "dark"]
+            alabaster: ["#F6F5F0", "light"]
           };
           var t = saved && bgMap[saved] ? saved : "elysium";
           document.documentElement.dataset.theme = t;

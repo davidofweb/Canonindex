@@ -250,7 +250,7 @@ export function VoteView({
       <ContractRibbon highlight={`signTypedData(Ballot#${snap.round})`} />
 
       {/* Minimalist Voter Standing Bar */}
-      <section className="flex flex-col justify-between gap-3 border-b border-line pb-6 sm:flex-row sm:items-center">
+      <section className="flex flex-col justify-between gap-3 pb-6 sm:flex-row sm:items-center">
         {!onChain ? (
           <>
             <div>
@@ -319,14 +319,14 @@ export function VoteView({
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
         <section className="canon-card p-5 sm:p-6 lg:col-span-8">
-          <div className="flex items-center justify-between border-b border-line pb-3.5">
+          <div className="flex items-center justify-between pb-3.5">
             <p className="ui-label">{candidates.length} Eligible Clean Coins</p>
             <span className="num text-[12.5px] font-bold text-ink">
               {selection.length} / {snap.seats} Picked
             </span>
           </div>
 
-          <ul className="mt-3 divide-y divide-line">
+          <ul className="mt-3 space-y-1">
             {candidates.map((c) => {
               const checked = isPicked(c.token);
               const isLeader = leaderSet.has(c.token.toLowerCase()) && c.votes > 0;
@@ -336,7 +336,7 @@ export function VoteView({
                   : false;
 
               return (
-                <li key={c.token} className="py-3">
+                <li key={c.token} className="py-2.5">
                   <div className="flex items-center justify-between gap-3">
                     <button
                       type="button"
@@ -345,10 +345,10 @@ export function VoteView({
                       className="flex min-h-[44px] min-w-0 flex-1 cursor-pointer items-center gap-3 text-left disabled:cursor-not-allowed disabled:opacity-45"
                     >
                       <span
-                        className={`flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-[7px] border transition-colors ${
+                        className={`flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-[7px] transition-colors ${
                           checked
-                            ? "border-signal bg-signal text-signal-ink"
-                            : "border-line-strong bg-well"
+                            ? "bg-signal text-signal-ink"
+                            : "bg-well text-stone"
                         }`}
                       >
                         {checked && <Check className="h-3.5 w-3.5 stroke-[3]" />}
@@ -418,10 +418,10 @@ export function VoteView({
           </div>
 
           {err && (
-            <p className="mt-3 border-t border-line pt-3 text-[13px] text-crimson">{err}</p>
+            <p className="mt-3 pt-3 text-[13px] text-crimson">{err}</p>
           )}
           {sent && !err && (
-            <p className="mt-3 border-t border-line pt-3 text-[13px] font-bold text-forest">
+            <p className="mt-3 pt-3 text-[13px] font-bold text-forest">
               Ballot counted. You can update your picks anytime before the round closes.
             </p>
           )}
@@ -433,7 +433,7 @@ export function VoteView({
             {snap.leaders.length === 0 ? (
               <p className="mt-3 text-[14px] text-stone">No ballots cast in this round yet.</p>
             ) : (
-              <ol className="mt-3 divide-y divide-line border-y border-line">
+              <ol className="mt-3 space-y-1">
                 {snap.leaders.map((addr, idx) => {
                   const found = snap.candidates.find(
                     (c) => c.token.toLowerCase() === addr.toLowerCase(),

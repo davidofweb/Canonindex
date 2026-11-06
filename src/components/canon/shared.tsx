@@ -3,9 +3,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { formatUnits, parseUnits, type TransactionReceipt } from "viem";
 import { useBlock, useConfig, useConnection, useWriteContract } from "wagmi";
 import { getPublicClient, waitForTransactionReceipt } from "wagmi/actions";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Moon, Sun } from "lucide-react";
 import { elysium, explorer } from "@/lib/chain/config";
-import { setTheme, THEMES, useTheme } from "@/lib/theme";
+import { setTheme, useTheme } from "@/lib/theme";
 
 export type Hex = `0x${string}`;
 
@@ -18,37 +18,37 @@ export function ThemeSwitcher({ className = "" }: { className?: string }) {
     <div
       role="radiogroup"
       aria-label="Color theme"
-      className={`inline-flex flex-wrap items-center gap-1 rounded-[12px] border border-line bg-well p-1 ${className}`}
+      className={`inline-flex items-center gap-1 rounded-[14px] bg-well p-1 ${className}`}
     >
-      {THEMES.map((t) => {
-        const active = t.id === activeTheme;
-        return (
-          <button
-            key={t.id}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            onClick={() => setTheme(t.id)}
-            className={`inline-flex min-h-[36px] cursor-pointer items-center gap-1.5 rounded-[9px] px-2.5 text-[12px] font-bold tracking-[-0.01em] transition-colors ${
-              active
-                ? "bg-surface text-ink ring-1 ring-line-strong"
-                : "text-stone hover:text-ink"
-            }`}
-          >
-            <span
-              aria-hidden="true"
-              className="relative flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ring-1 ring-black/15"
-              style={{ backgroundColor: t.canvasHex }}
-            >
-              <span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{ backgroundColor: t.signalHex }}
-              />
-            </span>
-            <span>{t.shortLabel}</span>
-          </button>
-        );
-      })}
+      <button
+        type="button"
+        role="radio"
+        aria-checked={activeTheme === "alabaster"}
+        onClick={() => setTheme("alabaster")}
+        className={`inline-flex min-h-[38px] flex-1 cursor-pointer items-center justify-center gap-2 rounded-[10px] px-3.5 text-[12.5px] font-bold tracking-[-0.015em] transition-all ${
+          activeTheme === "alabaster"
+            ? "bg-surface text-ink shadow-sm"
+            : "text-stone hover:text-ink"
+        }`}
+      >
+        <Sun className="h-4 w-4 text-amber-tone" />
+        <span>Light</span>
+      </button>
+
+      <button
+        type="button"
+        role="radio"
+        aria-checked={activeTheme === "elysium"}
+        onClick={() => setTheme("elysium")}
+        className={`inline-flex min-h-[38px] flex-1 cursor-pointer items-center justify-center gap-2 rounded-[10px] px-3.5 text-[12.5px] font-bold tracking-[-0.015em] transition-all ${
+          activeTheme === "elysium"
+            ? "bg-surface text-ink shadow-sm"
+            : "text-stone hover:text-ink"
+        }`}
+      >
+        <Moon className="h-4 w-4 text-signal" />
+        <span>Dark</span>
+      </button>
     </div>
   );
 }
@@ -122,7 +122,7 @@ export function useTx() {
 export function TxFeedback({ error, lastTx }: { error: string | null; lastTx: Hex | null }) {
   if (error) {
     return (
-      <p className="mt-3 border-t border-line pt-3 text-[13px] leading-snug text-crimson">
+      <p className="mt-3 pt-3 text-[13px] leading-snug text-crimson">
         {error}
         {lastTx && error.startsWith("Your transaction was sent") && (
           <>
@@ -144,7 +144,7 @@ export function TxFeedback({ error, lastTx }: { error: string | null; lastTx: He
 
   if (lastTx) {
     return (
-      <div className="mt-3 flex items-center justify-between gap-2 border-t border-line pt-3 text-[13px]">
+      <div className="mt-3 flex items-center justify-between gap-2 pt-3 text-[13px]">
         <span className="font-bold text-forest">Confirmed on Elysium</span>
         <a
           href={explorer("tx", lastTx)}
@@ -190,7 +190,7 @@ export function SegmentedControl<T extends string>({
             onClick={() => onChange(opt.id)}
             className={`min-h-[42px] flex-1 cursor-pointer rounded-[12px] px-3 text-[13.5px] font-bold tracking-[-0.015em] transition-all duration-150 active:scale-[0.98] ${
               active
-                ? "bg-surface/95 text-ink shadow-[0_4px_12px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.22)] ring-1 ring-line-strong/80"
+                ? "bg-surface/95 text-ink shadow-[0_4px_12px_rgba(0,0,0,0.18)]"
                 : "text-stone hover:text-ink"
             }`}
           >

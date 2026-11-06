@@ -49,13 +49,13 @@ export function BottomSheet({
       />
 
       <div
-        className={`animate-sheet oxygen-glass-sheet relative z-10 flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[28px] border-t border-line-strong/70 text-ink lg:max-h-[85dvh] lg:rounded-[26px] lg:border lg:border-line-strong/70 ${maxWidthClass}`}
+        className={`animate-sheet oxygen-glass-sheet relative z-10 flex max-h-[88dvh] w-full flex-col overflow-hidden rounded-t-[28px] text-ink lg:max-h-[85dvh] lg:rounded-[26px] ${maxWidthClass}`}
       >
         <div className="flex justify-center pt-2.5 pb-1 lg:hidden" aria-hidden="true">
           <span className="h-1 w-9 rounded-full bg-line-strong" />
         </div>
 
-        <div className="flex items-start justify-between gap-4 border-b border-line px-5 pt-2.5 pb-4 lg:px-6 lg:pt-5">
+        <div className="flex items-start justify-between gap-4 px-5 pt-2.5 pb-4 lg:px-6 lg:pt-5">
           <div className="min-w-0">
             <h2 className="heading-card text-[20px] text-ink lg:text-[21px]">{title}</h2>
             {subtitle && (

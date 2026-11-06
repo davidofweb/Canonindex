@@ -1464,7 +1464,7 @@ export function TestnetStudioSheet({
           ariaLabel="Launch mode"
         />
 
-        <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <p className="text-[14.5px] font-extrabold tracking-[-0.015em] text-ink">
               Free Testnet Keys &amp; $0 Cost Guide
@@ -1498,7 +1498,7 @@ export function TestnetStudioSheet({
         {mode === "guided" && (
           <div className="space-y-4">
             {/* STEP 01: WALLET & FREE GAS */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="ui-label">01. Wallet & Free Gas</p>
@@ -1562,7 +1562,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* STEP 02: DEPLOY $CANON SUITE */}
-            <div className="space-y-4 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="space-y-4 rounded-[20px] bg-surface p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="ui-label">02. Deploy $CANON Contract Suite</p>
@@ -1622,7 +1622,7 @@ export function TestnetStudioSheet({
                             className={`num min-h-[46px] cursor-pointer rounded-[12px] text-[14px] font-bold transition-colors ${
                               active
                                 ? "bg-signal text-signal-ink"
-                                : "bg-well text-ink ring-1 ring-line hover:bg-well-hover"
+                                : "bg-well text-ink hover:bg-well-hover"
                             }`}
                           >
                             {p.label}
@@ -1670,7 +1670,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* STEP 03: SEED BACKER FAUCET & SHARE FOR CROWDFUNDERS / GRANTS */}
-            <div className="space-y-4 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="space-y-4 rounded-[20px] bg-surface p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="ui-label">03. Seed Backer Faucet & Share</p>
@@ -1706,7 +1706,7 @@ export function TestnetStudioSheet({
               </button>
 
               {hasCustomSuite && targetDeployment && (
-                <div className="space-y-3 border-t border-line pt-4">
+                <div className="space-y-3 pt-4">
                   <p className="ui-label">Share With Crowdfunders & Grant Committees</p>
 
                   <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
@@ -1831,7 +1831,7 @@ export function TestnetStudioSheet({
 
             {/* Wallet / Chain Gate Banner when disconnected or wrong network */}
             {!isConnected ? (
-              <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-[14.5px] font-bold text-ink">
                     Connect wallet to deploy or sign
@@ -1852,7 +1852,7 @@ export function TestnetStudioSheet({
                 </button>
               </div>
             ) : !onChain ? (
-              <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 rounded-[18px] bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-[14.5px] font-bold text-ink">
                     Switch wallet to Elysium Testnet
@@ -1877,7 +1877,7 @@ export function TestnetStudioSheet({
         {tab === "setup" && (
           <div className="space-y-5">
             {/* Gas & Faucet Check */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="ui-label">01. Gas & Network</p>
@@ -1892,7 +1892,7 @@ export function TestnetStudioSheet({
                   </p>
                 </div>
               </div>
-              <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3.5 text-[13px] text-stone">
+              <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3 pt-3.5 text-[13px] text-stone">
                 <span>Full 6-contract deploy uses ~0.02 Test HYPE.</span>
                 <a
                   href={FAUCET_URL}
@@ -1907,7 +1907,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* In-Browser Worker Key Generator */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="ui-label">02. Background Worker Keys</p>
@@ -1929,8 +1929,8 @@ export function TestnetStudioSheet({
               </div>
 
               {workerKeys && (
-                <div className="mt-4 space-y-3 border-t border-line pt-4">
-                  <div className="divide-y divide-line text-[13px]">
+                <div className="mt-4 space-y-3 pt-4">
+                  <div className="space-y-1 text-[13px]">
                     <div className="flex items-center justify-between gap-2 py-2.5">
                       <div>
                         <span className="font-bold text-ink">Pass Signer</span>
@@ -2019,7 +2019,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* Token Identity, Permanent 15% Fee Lock & Role Addresses */}
-            <div className="space-y-4 rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="space-y-4 rounded-[20px] bg-surface p-5">
               <div>
                 <p className="ui-label">03. Token & Permanent Fee Split</p>
                 <p className="mt-1 text-[16px] font-extrabold tracking-tight text-ink">
@@ -2068,7 +2068,7 @@ export function TestnetStudioSheet({
                         className={`num min-h-[46px] cursor-pointer rounded-[12px] text-[14px] font-bold transition-colors ${
                           active
                             ? "bg-signal text-signal-ink"
-                            : "bg-well text-ink ring-1 ring-line hover:bg-well-hover"
+                            : "bg-well text-ink hover:bg-well-hover"
                         }`}
                       >
                         {p.label}
@@ -2078,7 +2078,7 @@ export function TestnetStudioSheet({
                 </div>
               </div>
 
-              <div className="space-y-3 border-t border-line pt-3.5">
+              <div className="space-y-3 pt-3.5">
                 <div>
                   <label htmlFor="studio-team-addr" className="ui-label">
                     Team Fee Wallet ({teamSharePct}%)
@@ -2153,7 +2153,7 @@ export function TestnetStudioSheet({
            ================================================================= */}
         {tab === "launch" && (
           <div className="space-y-4">
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="ui-label">Contract Suite</p>
@@ -2176,7 +2176,7 @@ export function TestnetStudioSheet({
                 )}
               </div>
 
-              <div className="mt-4 divide-y divide-line border-t border-line">
+              <div className="mt-4 space-y-1">
                 {[
                   {
                     num: "01",
@@ -2284,7 +2284,7 @@ export function TestnetStudioSheet({
         {tab === "seed" && (
           <div className="space-y-4">
             {/* Step A: Seed Liquidity + Free Drip */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <p className="ui-label">01. Trade Helper & Free Token Drip</p>
               <p className="mt-1 text-[16px] font-extrabold tracking-tight text-ink">
                 Seed 500 Test USDC & Fund 250 $CANON Drip
@@ -2316,7 +2316,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* Step B: Propose & Execute Clean 10-Coin Basket */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="ui-label">02. Top 10 Clean Basket</p>
@@ -2338,7 +2338,7 @@ export function TestnetStudioSheet({
               </p>
 
               {proposalCount > 0 && !latestExecuted && latestEta > now && (
-                <p className="num mt-3 border-t border-line pt-3 text-[13px] font-bold text-ink">
+                <p className="num mt-3 pt-3 text-[13px] font-bold text-ink">
                   24h Timelock · Ready to execute in {until(latestEta - now)}
                 </p>
               )}
@@ -2369,7 +2369,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* Step C: Manual Fee Route & Live App Switch */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="ui-label">03. Live App Switch & Fee Run</p>
@@ -2407,7 +2407,7 @@ export function TestnetStudioSheet({
                 )}
               </div>
 
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3.5">
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-3.5">
                 {customLive ? (
                   <>
                     <span className="text-[13px] font-bold text-forest">
@@ -2452,7 +2452,7 @@ export function TestnetStudioSheet({
         {tab === "workers" && (
           <div className="space-y-4">
             {/* Live On-Chain & Worker Telemetry */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <p className="ui-label">Live Worker Readout</p>
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <div className="canon-well p-3">
@@ -2493,7 +2493,7 @@ export function TestnetStudioSheet({
             </div>
 
             {/* Worker 1: HYPE Pass Minter */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <p className="ui-label">Worker 1 · Free Cloudflare Edge</p>
@@ -2509,13 +2509,13 @@ export function TestnetStudioSheet({
                   {copiedId === "w1-cmd" ? "Copied ✓" : "Copy Commands"}
                 </button>
               </div>
-              <pre className="num mt-3 overflow-x-auto rounded-[13px] bg-well p-3.5 text-[12px] leading-relaxed text-ink ring-1 ring-line">
+              <pre className="num mt-3 overflow-x-auto rounded-[13px] bg-well p-3.5 text-[12px] leading-relaxed text-ink">
                 {passportWorkerSnippet}
               </pre>
             </div>
 
             {/* Worker 2: 5-Minute Vault & Boost Keeper */}
-            <div className="rounded-[20px] bg-surface p-5 ring-1 ring-line">
+            <div className="rounded-[20px] bg-surface p-5">
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <p className="ui-label">Worker 2 · 5-Min Cron Trigger</p>
@@ -2531,7 +2531,7 @@ export function TestnetStudioSheet({
                   {copiedId === "w2-cmd" ? "Copied ✓" : "Copy Commands"}
                 </button>
               </div>
-              <pre className="num mt-3 overflow-x-auto rounded-[13px] bg-well p-3.5 text-[12px] leading-relaxed text-ink ring-1 ring-line">
+              <pre className="num mt-3 overflow-x-auto rounded-[13px] bg-well p-3.5 text-[12px] leading-relaxed text-ink">
                 {keeperWorkerSnippet}
               </pre>
               <p className="mt-2.5 text-[12.5px] text-stone">

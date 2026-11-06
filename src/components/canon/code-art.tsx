@@ -827,7 +827,7 @@ export function CanonWalletSigil({
       viewBox="0 0 9 9"
       shapeRendering="crispEdges"
       aria-hidden="true"
-      className={`shrink-0 rounded-2xl border border-line bg-well ${className}`}
+      className={`shrink-0 rounded-2xl bg-well ${className}`}
     >
       {cells.map((c, idx) => (
         <rect
@@ -844,7 +844,7 @@ export function CanonWalletSigil({
 }
 
 /* ============================================================================
- * 7. MINIMAL CONTRACT HAIRLINE RIBBON
+ * 7. MINIMAL CONTRACT RIBBON
  * ========================================================================== */
 
 export function ContractRibbon({ highlight }: { highlight?: string }) {
@@ -853,7 +853,7 @@ export function ContractRibbon({ highlight }: { highlight?: string }) {
   return (
     <div
       aria-hidden="true"
-      className="num flex items-center gap-3 overflow-hidden border-y border-line py-2 text-[10.5px] font-medium tracking-tight text-stone-light"
+      className="num flex items-center gap-3 overflow-hidden py-2 text-[10.5px] font-medium tracking-tight text-stone-light"
     >
       {highlight && (
         <span className="shrink-0 font-bold text-signal">

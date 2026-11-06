@@ -650,7 +650,7 @@ export function YoyoLiquidCapsule({
         <span
           key={rippleKey}
           aria-hidden="true"
-          className="animate-yoyo-ripple pointer-events-none absolute inset-0 rounded-full border border-white/75 shadow-[0_0_16px_rgba(255,255,255,0.45)_inset]"
+          className="animate-yoyo-ripple pointer-events-none absolute inset-0 rounded-full bg-white/15 shadow-[0_0_24px_rgba(255,255,255,0.65)]"
         />
       )}
       {/* Pointer- and tilt-reactive colorless crystal Liquid Glass rim caustic refraction */}

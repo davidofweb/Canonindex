@@ -170,8 +170,8 @@ export function HomeView({
         </div>
       </section>
 
-      {/* 2. ARCHITECTURAL HAIRLINE METRICS STRIP */}
-      <section className="border-t border-line pt-8">
+      {/* 2. ARCHITECTURAL METRICS STRIP */}
+      <section className="pt-8">
         <div className="grid grid-cols-2 gap-y-7 gap-x-6 sm:grid-cols-4">
           <div>
             <p className="ui-label">Vault Coins</p>
@@ -261,9 +261,9 @@ export function HomeView({
           </p>
           <p className="mt-1.5 text-[14px] leading-relaxed text-stone">{sim.sub}</p>
 
-          <div className="mt-5 divide-y divide-line border-t border-line">
+          <div className="mt-5 space-y-1">
             {sim.rows.map((r) => (
-              <div key={r.label} className="flex items-center justify-between gap-4 py-3.5 text-[14.5px]">
+              <div key={r.label} className="flex items-center justify-between gap-4 py-2.5 text-[14.5px]">
                 <span className="font-semibold text-ink-soft">{r.label}</span>
                 <span
                   className={`num font-bold ${
@@ -283,7 +283,7 @@ export function HomeView({
       </section>
 
       {/* 4. INTERACTIVE 10-RING CODE VAULT */}
-      <section className="border-t border-line pt-10">
+      <section className="pt-10">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <p className="ui-label">The Vault · Round 4 Live Constituents</p>
@@ -298,7 +298,7 @@ export function HomeView({
             className={`inline-flex min-h-[42px] shrink-0 cursor-pointer items-center justify-center rounded-[12px] px-4 text-[13px] font-bold transition-colors ${
               previewBallotSwap
                 ? "bg-primary-bg text-primary-fg"
-                : "border border-line-strong bg-surface text-ink hover:bg-well"
+                : "bg-surface text-ink hover:bg-well"
             }`}
           >
             {previewBallotSwap ? "Ballot Seats Active ✓" : "Preview 3 Ballot Seats"}
@@ -314,7 +314,7 @@ export function HomeView({
               onSelect={setSelectedVaultIdx}
             />
             {activeCoin && (
-              <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-3.5">
+              <div className="mt-4 flex items-center justify-between gap-3 pt-3.5">
                 <div className="min-w-0">
                   <p className="text-[14px] font-extrabold text-ink">
                     {vaultSlices[selectedVaultIdx]?.symbol ?? activeCoin.symbol} ·{" "}
@@ -337,7 +337,7 @@ export function HomeView({
             )}
           </div>
 
-          {/* Minimalist Hairline 10-Coin Index Table */}
+          {/* Minimalist 10-Coin Index Table */}
           <div className="lg:col-span-7">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {vaultSlices.map((coin, idx) => {
@@ -349,8 +349,8 @@ export function HomeView({
                     onClick={() => setSelectedVaultIdx(idx)}
                     className={`flex min-h-[50px] cursor-pointer items-center justify-between rounded-[14px] px-4 py-2.5 text-left transition-colors ${
                       selected
-                        ? "border border-signal bg-well text-ink"
-                        : "border border-line bg-surface text-ink hover:bg-well"
+                        ? "bg-well text-ink shadow-sm"
+                        : "bg-surface/80 text-ink hover:bg-well"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
@@ -396,7 +396,7 @@ export function HomeView({
       </section>
 
       {/* 5. THREE MINIMALIST ARCHITECTURAL PILLARS */}
-      <section className="grid grid-cols-1 gap-8 border-t border-line pt-10 md:grid-cols-3 md:gap-10">
+      <section className="grid grid-cols-1 gap-8 pt-10 md:grid-cols-3 md:gap-10">
         <div className="flex flex-col justify-between">
           <div>
             <p className="ui-label">01 · Boost</p>

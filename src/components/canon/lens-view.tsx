@@ -83,7 +83,7 @@ export function LensView({
             </div>
 
             {isHexQuery && (
-              <div className="flex items-center justify-between gap-3 rounded-[18px] bg-well px-3.5 py-2.5 ring-1 ring-line">
+              <div className="flex items-center justify-between gap-3 rounded-[18px] bg-well px-3.5 py-2.5">
                 <div className="flex min-w-0 items-center gap-3">
                   <YoyoLiquidCapsule
                     size="compact"
@@ -200,7 +200,7 @@ export function LensView({
           </div>
 
           {roundHistory && (
-            <div className="border-t border-line pt-5">
+            <div className="pt-5">
               <p className="ui-label">Vault Round {roundHistory.current.round}</p>
               <p className="num mt-2 text-[13px] font-bold leading-relaxed text-ink">
                 {roundHistory.current.symbols.join(" · ")}
@@ -216,7 +216,7 @@ export function LensView({
             </div>
           )}
 
-          <div className="border-t border-line pt-5">
+          <div className="pt-5">
             <p className="ui-label">Disputes</p>
             <p className="mt-1.5 text-[13px] leading-relaxed text-stone">
               Every check cites public explorer transactions. If a pattern misread independent trades, submit the proof.

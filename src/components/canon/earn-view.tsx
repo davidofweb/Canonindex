@@ -184,8 +184,8 @@ export function EarnView({
 
       <ContractRibbon highlight={tab === "stake" ? "staking.stake(amount)" : "staking.requestUnstake(amount)"} />
 
-      {/* Architectural Hairline Summary Metrics */}
-      <section className="grid grid-cols-2 gap-y-6 gap-x-6 border-b border-line pb-8 sm:grid-cols-4">
+      {/* Summary Metrics */}
+      <section className="grid grid-cols-2 gap-y-6 gap-x-6 pb-8 sm:grid-cols-4">
         <div>
           <p className="ui-label">Staked</p>
           <p className="num mt-1.5 text-[26px] font-extrabold text-ink">
@@ -237,7 +237,7 @@ export function EarnView({
 
       {/* Active 3-Day Cooldown Strip */}
       {onChain && cooling > 0n && (
-        <div className="flex flex-col justify-between gap-4 rounded-[18px] border border-signal bg-surface p-5 sm:flex-row sm:items-center">
+        <div className="flex flex-col justify-between gap-4 rounded-[18px] bg-surface p-5 sm:flex-row sm:items-center">
           <div>
             <p className="ui-label text-signal">Cooldown Active</p>
             <p className="heading-card mt-1 text-[17px] text-ink">
@@ -319,7 +319,7 @@ export function EarnView({
                   type="button"
                   disabled={maxAmount === 0n}
                   onClick={() => setPct(pct)}
-                  className="num min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-ink ring-1 ring-line hover:bg-well-hover disabled:opacity-40"
+                  className="num min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-ink hover:bg-well-hover disabled:opacity-40"
                 >
                   {pct}%
                 </button>
@@ -328,7 +328,7 @@ export function EarnView({
                 type="button"
                 disabled={maxAmount === 0n}
                 onClick={() => setPct(100)}
-                className="min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-signal ring-1 ring-line hover:bg-well-hover disabled:opacity-40"
+                className="min-h-[34px] cursor-pointer rounded-[9px] bg-surface px-3 text-[12.5px] font-bold text-signal hover:bg-well-hover disabled:opacity-40"
               >
                 Max
               </button>
@@ -377,9 +377,9 @@ export function EarnView({
                 Vault coins stream here automatically after index fee buys.
               </p>
             ) : (
-              <ul className="mt-3 max-h-[240px] divide-y divide-line overflow-y-auto border-y border-line">
+              <ul className="mt-3 max-h-[240px] space-y-1 overflow-y-auto">
                 {rewards.map((r) => (
-                  <li key={r.address} className="flex items-center justify-between py-2.5 text-[14px]">
+                  <li key={r.address} className="flex items-center justify-between py-2 text-[14px]">
                     <span className="font-bold text-ink">{r.symbol}</span>
                     <span
                       className={`num font-bold ${
@@ -409,8 +409,8 @@ export function EarnView({
 
           <div>
             <p className="ui-label">Reward Multipliers</p>
-            <div className="mt-3 divide-y divide-line border-y border-line text-[13.5px]">
-              <div className="flex items-center justify-between py-3">
+            <div className="mt-3 space-y-1 text-[13.5px]">
+              <div className="flex items-center justify-between py-2.5">
                 <div>
                   <p className="font-bold text-ink">Time Bonus</p>
                   <p className="text-[12px] text-stone">Ramps to 1.50× over 30 days</p>
@@ -420,7 +420,7 @@ export function EarnView({
                 </span>
               </div>
 
-              <div className="flex items-center justify-between py-3">
+              <div className="flex items-center justify-between py-2.5">
                 <div>
                   <p className="font-bold text-ink">HYPE Pass</p>
                   <p className="text-[12px] text-stone">1.10× to 1.25× for HYPE holders</p>

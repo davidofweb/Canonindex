@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-export type ThemeId = "elysium" | "cobalt" | "alabaster" | "titanium";
+export type ThemeId = "elysium" | "alabaster";
 
 export type ThemeMeta = {
   id: ThemeId;
@@ -21,41 +21,9 @@ export type ThemeMeta = {
 
 export const THEMES: ReadonlyArray<ThemeMeta> = [
   {
-    id: "elysium",
-    label: "Elysium & Mint",
-    shortLabel: "Elysium",
-    isDark: true,
-    canvasHex: "#07090F",
-    surfaceHex: "#0E131D",
-    inkHex: "#F5F8FF",
-    stoneHex: "#8E9BB0",
-    lineHex: "#1C2536",
-    signalHex: "#4CE6C0",
-    forestHex: "#34D399",
-    inkRgb: [245, 248, 255],
-    stoneRgb: [142, 155, 176],
-    signalRgb: [76, 230, 192],
-  },
-  {
-    id: "cobalt",
-    label: "Glacier & Cobalt",
-    shortLabel: "Cobalt",
-    isDark: false,
-    canvasHex: "#F2F5FB",
-    surfaceHex: "#FFFFFF",
-    inkHex: "#0B1120",
-    stoneHex: "#526077",
-    lineHex: "#DCE3EE",
-    signalHex: "#2563EB",
-    forestHex: "#059669",
-    inkRgb: [11, 17, 32],
-    stoneRgb: [82, 96, 119],
-    signalRgb: [37, 99, 235],
-  },
-  {
     id: "alabaster",
-    label: "Alabaster & Emerald",
-    shortLabel: "Alabaster",
+    label: "Light (Alabaster)",
+    shortLabel: "Light",
     isDark: false,
     canvasHex: "#F6F5F0",
     surfaceHex: "#FDFCF9",
@@ -69,32 +37,34 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
     signalRgb: [5, 150, 105],
   },
   {
-    id: "titanium",
-    label: "Titanium & Lime",
-    shortLabel: "Titanium",
+    id: "elysium",
+    label: "Dark (Elysium)",
+    shortLabel: "Dark",
     isDark: true,
-    canvasHex: "#101216",
-    surfaceHex: "#171A21",
-    inkHex: "#F2F3F5",
-    stoneHex: "#8E939E",
-    lineHex: "#262B35",
-    signalHex: "#B8FF2C",
-    forestHex: "#4ADE80",
-    inkRgb: [242, 243, 245],
-    stoneRgb: [142, 147, 158],
-    signalRgb: [184, 255, 44],
+    canvasHex: "#07090F",
+    surfaceHex: "#0E131D",
+    inkHex: "#F5F8FF",
+    stoneHex: "#8E9BB0",
+    lineHex: "#1C2536",
+    signalHex: "#4CE6C0",
+    forestHex: "#34D399",
+    inkRgb: [245, 248, 255],
+    stoneRgb: [142, 155, 176],
+    signalRgb: [76, 230, 192],
   },
 ];
 
-export const THEME_STORAGE_KEY = "canon.theme.v1";
+export const THEME_STORAGE_KEY = "canon.theme.v2";
+export const DARK_THEME: ThemeId = "elysium";
+export const LIGHT_THEME: ThemeId = "alabaster";
 const DEFAULT_THEME: ThemeId = "elysium";
 
 function isValidTheme(v: unknown): v is ThemeId {
-  return v === "elysium" || v === "cobalt" || v === "alabaster" || v === "titanium";
+  return v === "elysium" || v === "alabaster";
 }
 
 export function getThemePalette(id: ThemeId): ThemeMeta {
-  return THEMES.find((t) => t.id === id) ?? THEMES[0];
+  return THEMES.find((t) => t.id === id) ?? THEMES.find((t) => t.id === "elysium") ?? THEMES[0];
 }
 
 let currentTheme: ThemeId = DEFAULT_THEME;
@@ -114,7 +84,7 @@ function applyDomTheme(theme: ThemeId) {
 if (typeof window !== "undefined") {
   try {
     const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved === "obsidian") {
+    if (!saved || saved === "obsidian") {
       currentTheme = "elysium";
       window.localStorage.setItem(THEME_STORAGE_KEY, "elysium");
     } else if (isValidTheme(saved)) {
@@ -138,6 +108,15 @@ export function setTheme(next: ThemeId) {
     // Storage unavailable
   }
   listeners.forEach((fn) => fn());
+}
+
+export function toggleColorMode() {
+  const next = currentTheme === "elysium" ? "alabaster" : "elysium";
+  setTheme(next);
+}
+
+export function isDarkMode(theme: ThemeId = currentTheme): boolean {
+  return getThemePalette(theme).isDark;
 }
 
 export function useTheme(): ThemeId {
