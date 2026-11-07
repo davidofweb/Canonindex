@@ -28,6 +28,7 @@ import { INITIAL_DELPHI, liveRound, readDelphi, type Delphi } from "@/lib/delphi
 import { INITIAL_LIVE, readLive, type Live } from "@/lib/live";
 import {
   completeBootSequence,
+  dismissAddressVerify,
   finishAddressVerify,
   startAddressVerify,
   updateBootProgress,
@@ -101,33 +102,29 @@ function parseRoute(pathname: string): {
  * 0x address verification scan whenever a wallet connects or changes address.
  */
 function WalletAddressVerifyWatcher() {
-  const { address, isConnected, isConnecting, chainId } = useConnection();
+  const { address, isConnected, chainId } = useConnection();
   const prevAddrRef = useRef<string | undefined>(undefined);
   const mountedAtRef = useRef<number>(Date.now());
 
   useEffect(() => {
-    if (isConnecting && !isConnected) {
-      startAddressVerify({
-        posture: "scan",
-        label: "Connecting wallet",
-        sublabel: "Elysium 99801",
-      });
-    }
-  }, [isConnecting, isConnected]);
+    // Clear any stale verification toasts on mount
+    dismissAddressVerify();
+  }, []);
 
   useEffect(() => {
     if (!isConnected || !address) {
       prevAddrRef.current = undefined;
+      dismissAddressVerify();
       return;
     }
 
     if (prevAddrRef.current?.toLowerCase() === address.toLowerCase()) {
       return;
     }
-    const isInitialMount = Date.now() - mountedAtRef.current < 900;
+    const isInitialMount = Date.now() - mountedAtRef.current < 1500;
     prevAddrRef.current = address;
 
-    // Skip overlapping toast during initial boot screen; run immediately for live connects/switches
+    // Skip toast during initial mount; trigger only for live connects or account switches
     if (isInitialMount) return;
 
     startAddressVerify({

@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import solc from "solc";
 
-const ZIP_PATH = path.resolve("public/assets/aistudio/pantheon-main_f0d6565e.zip");
+const ZIP_PATH = path.resolve("public/assets/pantheon-main.zip");
 const OUT_FILE = path.resolve("src/lib/chain/testnet-artifacts.ts");
 
 function readZipEntry(entryPath) {

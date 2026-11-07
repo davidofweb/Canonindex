@@ -1232,7 +1232,7 @@ export function YoyoVerifyOverlay() {
   }
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-3 z-[95] flex justify-center px-4">
+    <div className="pointer-events-none fixed inset-x-0 top-18 z-40 flex justify-center px-4">
       <div
         role="status"
         aria-live="polite"

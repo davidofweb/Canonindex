@@ -1,6 +1,0 @@
-{
-  "summary": "Go-live readiness plan for CANON on Elysium, covering multi-RPC resilience, 1-tap Testnet/Mainnet switching, real-time NAV and price feeds, cloud persistence for portfolios and alerts, and mobile-first PWA installability.",
-  "updatedAt": "2026-11-06T10:20:30.709574839Z",
-  "requestFeedback": true,
-  "userFacing": true
-}

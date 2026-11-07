@@ -71,8 +71,8 @@ export function CanonShell({
       {/* Top Bar:
           - Mobile (<1024px): Scrolls naturally with page (zero sticky top clutter)
           - Desktop (>=1024px): Strict 3-Zone Sticky OxygenOS Glass Top Bar */}
-      <header className="bg-canvas/76 backdrop-blur-xl lg:sticky lg:top-0 lg:z-30">
-        <div className="mx-auto flex h-15 max-w-6xl items-center justify-between gap-8 px-4 sm:px-6">
+      <header className="relative z-30 bg-canvas/76 backdrop-blur-xl lg:sticky lg:top-0">
+        <div className="mx-auto flex h-15 max-w-6xl items-center justify-between gap-3 px-4 sm:gap-8 sm:px-6">
           {/* Zone 1: Geometric Vault Wordmark */}
           <button
             type="button"
